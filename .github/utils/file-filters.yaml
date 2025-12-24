@@ -1,0 +1,12 @@
+# ---- services ---------------------------------------------------------------
+services/backend:
+  - "services/backend/**"
+  - ".github/actions/service-deps.yaml"
+
+services/frontend:
+  - "services/frontend/**"
+  - ".github/actions/service-deps.yaml"
+
+services/database:
+  - "services/database/**"
+  - ".github/actions/service-deps.yaml"

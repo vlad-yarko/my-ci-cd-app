@@ -8,7 +8,9 @@ spec:
   source:
     git:
       url: https://github.com/sidpalas/capstone.git
-      path: deploy/kubernetes/kluctl
+      path: k8s/application
+      ref:
+        branch: main   
   target: production
   context: default
   # let it automatically clean up orphan KluctlDeployment resources

@@ -1,0 +1,16 @@
+name: "Setup Task Dependency"
+description: "Setup Task Dependency"
+inputs:
+  task_version:
+    description: "version of task to install"
+    default: "v3.44.0"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install go-task
+      uses: supplypike/setup-bin@1fafb085795af4a3f183502f3a9dffa8f7b83217 # v5.0.0
+      with:
+        uri: "https://github.com/go-task/task/releases/download/${{ inputs.task_version }}/task_linux_amd64.tar.gz"
+        name: task
+        version: ${{ inputs.task_version }}

@@ -1,0 +1,38 @@
+name: "Setup Service Dependencies"
+description: "Setup Service tools/dependencies"
+inputs:
+  # Language runtimes / toolchains
+  install_node:
+    description: "install node if true"
+    default: "false"
+  install_python:
+    description: "install python if true"
+    default: "false"
+  service_path:
+    description: "path to service within repo (used to find version file)"
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Yarn (for Node)
+      if: ${{ inputs.install_node == 'true' }}
+      uses: DerYeger/yarn-setup-action@1bbb955a0598153150ce5b6d2d021c127f803682 #v2.0.21
+      with:
+        node-version: 20
+    - name: Set up Node
+      if: ${{ inputs.install_node == 'true' }}
+      uses: actions/setup-node@d7a11313b581b306c961b506cfc8971208bb03f6 # v4.4.0
+      with:
+        node-version-file: ./${{ inputs.service_path }}/package.json
+        node-version: 20
+        cache: yarn
+        cache-dependency-path: ./${{ inputs.service_path }}/yarn.lock
+    - name: Set up Python
+      if: ${{ inputs.install_python == 'true' }}
+      uses: actions/setup-python@3d1e2d2ca0a067f27da6fec484fce7f5256def85 # v5.6.0
+      with:
+        python-version-file: ./${{ inputs.service_path }}/.python-version
+        cache: pip
+        # cache-dependency-path: ./${{ inputs.service_path }}/poetry.lock
+k8s/application
