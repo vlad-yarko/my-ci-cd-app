@@ -35,4 +35,3 @@ runs:
         python-version-file: ./${{ inputs.service_path }}/.python-version
         cache: pip
         # cache-dependency-path: ./${{ inputs.service_path }}/poetry.lock
-k8s/application
