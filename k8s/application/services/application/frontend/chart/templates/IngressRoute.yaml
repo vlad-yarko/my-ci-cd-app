@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Values.frontend.ingressRoute.name }}
+  namespace: {{ .Values.sharedNamespace }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.applicationHost }}`) && PathPrefix("/")
+      services:
+        - kind: Service
+          name: {{ .Values.frontend.service.name }}
+          port: {{ .Values.frontend.service.port }}
+          scheme: http
+  tls:
+    secretName: {{ .Values.secret_tls.name }}

@@ -1,0 +1,13 @@
+backend:
+  deployment:
+    image: vladyslavyarko/ci-cd-backend-image 
+    version: 1 # production_services/backend
+
+database:
+  migrationJobImage: vladyslavyarko/ci-cd-database-image 
+  version: 1 # production_services/database
+
+frontend:
+  deployment:
+    image: vladyslavyarko/ci-cd-frontend-image
+    version: 1 # production_services/frontend

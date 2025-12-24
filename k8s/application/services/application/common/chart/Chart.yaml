@@ -1,0 +1,31 @@
+apiVersion: v2
+# name: my-kubernetes-database-chart
+name: ci-cd-common
+description: Common chart of my-kubernetes
+type: application
+
+# Chart version — updates when chart templates/values change
+version: 1.0.0
+
+# App version — the app's actual version (image tag, etc)
+appVersion: "1.0.0"
+
+# This matches your Docker LABEL maintainer
+maintainers:
+  - name: vlad-yarko
+    email: vladislavv44444@gmail.com
+
+# These are your Docker labels but in Helm
+annotations:
+  org.opencontainers.image.source: "https://github.com/vlad-yarko/my-kubernetes"
+  org.opencontainers.image.maintainer: "vlad-yarko"
+
+# For documentation / searching
+home: "https://github.com/vlad-yarko/my-kubernetes"
+sources:
+  - "https://github.com/vlad-yarko/my-kubernetes"
+# keywords:
+#   - backend
+#   - kubernetes
+#   - helm
+#   - my-app

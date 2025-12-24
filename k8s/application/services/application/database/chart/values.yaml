@@ -1,0 +1,62 @@
+# postgresql:
+#   auth:
+#     postgresPassword: "1234"
+architecture: standalone
+replication:
+  enabled: false
+  replicaCount: 2
+# image:
+#   repository: bitnamilegacy/postgresql
+auth:
+  postgresPassword: "1234"
+fullnameOverride: "database-postgresql"
+
+postgresql:
+  fullnameOverride: "database-postgresql"
+  auth:
+    postgresPassword: "1234"
+  architecture: standalone
+  replication:
+    enabled: false
+    replicaCount: 2
+  # image:
+  #   registry: docker.io
+  #   repository: bitnami/postgresql
+  #   tag: "16.3.0-debian-12-r23"
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/postgresql
+    tag: 16.3.0-debian-12-r9
+image:
+  repository: bitnamilegacy/postgresql
+
+primary:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 25m
+    limits:
+      cpu: 100m
+      memory: 50m
+
+
+sharedNamespace: my-kubernetes-application
+
+database:
+  secretName: database-secret
+  # migrationJobImage: ghcr.io/vlad-yarko/my-kubernetes-database:1.0.0
+  migrationJobImage: kubernetes-yep-registry.duckdns.org/my-kubernetes/database:prod
+  version: 1
+  migrationJobName: database-job-migration
+  migrationJobPodName: database-job-migration-pod
+  migrationJobContainerName: database-job-migration-container
+  migrationJobBackoffLimit: 3
+  host: "database-postgresql"
+
+# applicationHost: my-kubernetes.chickenkiller.com
+applicationHost: my-kubernetes.mooo.com
+
+harborSecret:
+  name: harbor-secret
+
+environment: production

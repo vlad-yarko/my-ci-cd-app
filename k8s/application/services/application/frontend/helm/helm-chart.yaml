@@ -1,0 +1,13 @@
+helmChart:
+  # path: ../chart
+  repo: oci://docker.io/vladyslavyarko/ci-cd-frontend
+  # repo: oci://ghcr.io/vlad-yarko/my-kubernetes/frontend-chart
+  chartVersion: 1.0.0
+  releaseName: my-kubernetes-frontend-{{ args.environment }}
+  # namespace: {{ namespaces.application.name }}
+  # namespace: default
+  namespace: my-kubernetes-application
+  output: helm-rendered.yaml
+  # skipPrePull: true
+  # values: 
+  #   - helm-values-{{ args.environment }}.yaml

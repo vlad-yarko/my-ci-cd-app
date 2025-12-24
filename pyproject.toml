@@ -1,0 +1,12 @@
+[project]
+name = "full"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.124.2",
+    "locust>=2.42.6",
+    "prometheus-client>=0.23.1",
+    "sqlalchemy>=2.0.45",
+]

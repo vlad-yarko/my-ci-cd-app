@@ -1,0 +1,13 @@
+sharedNamespace: {{ namespaces.application.name }}
+
+
+secret_tls:
+  name: secret-tls
+
+
+middleware_tls:
+  name: middleware-tls
+
+
+harborSecret:
+  name: harbor-secret

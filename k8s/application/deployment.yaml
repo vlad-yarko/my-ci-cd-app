@@ -1,0 +1,10 @@
+vars:
+  - file: config/{{ args.environment }}.yaml
+
+deployments:
+  - path: manifests
+  - barrier: true
+  - include: services
+
+commonLabels:
+  myKubernetes: "myKubernetes"

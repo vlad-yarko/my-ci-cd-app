@@ -1,0 +1,11 @@
+namespaces:
+  # application:
+  #   name: my-kubernetes-application-production
+  # ingress:
+  #   name: my-kubernetes-ingress-production
+  application:
+    name: my-kubernetes-application
+  ingress:
+    name: my-kubernetes-ingress
+  monitoring:
+    name: my-kubernetes-monitoring

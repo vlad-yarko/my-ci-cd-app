@@ -1,0 +1,19 @@
+targets:
+  - name: staging
+    args:
+      environment: staging
+      environmentType: non-prod
+    context: minikube
+
+  - name: production
+    args:
+      environment: production
+      environmentType: prod
+    context: kind-kind
+
+args:
+  - name: environment
+  - name: environmentType
+
+discriminator: ci-cd-app-{{ target.name }}
+

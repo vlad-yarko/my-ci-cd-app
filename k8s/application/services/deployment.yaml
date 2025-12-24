@@ -1,0 +1,5 @@
+vars:
+  - file: config/{{ args.environment }}.yaml
+
+deployments:
+  - include: application
