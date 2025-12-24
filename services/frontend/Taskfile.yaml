@@ -1,0 +1,39 @@
+version: "3"
+
+vars:
+  IMAGE_REPO: vladyslavyarko/ci-cd-frontend-image
+  IMAGE_TAG: 1
+  SERVICE_RELEASE_TAG: services/frontend
+
+includes:
+  utils:
+    taskfile: ../../utils/Taskfile.yaml
+    dir: ../../utils
+
+tasks:
+  install:
+    desc: "download dependencies"
+    cmds:
+      - yarn install
+
+  install-ci:
+    desc: install/download package dependencies
+    cmds:
+      - yarn install --immutable
+
+  run:
+    desc: "run app"
+    cmds:
+      # - yarn build
+      # - yarn start
+      - yarn dev
+
+  test:
+    desc: run tests
+    cmds:
+      # - yarn run build
+      # - yarn run start
+      - yarn dev
+      - yarn playwright install
+      - yarn playwright test
+

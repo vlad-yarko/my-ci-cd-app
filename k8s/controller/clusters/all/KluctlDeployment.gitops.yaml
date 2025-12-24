@@ -7,8 +7,8 @@ spec:
   interval: 5m
   source:
     git:
-      url: https://github.com/sidpalas/capstone.git
-      path: deploy/kubernetes/kluctl-gitops
+      url: https://github.com/vlad-yarko/my-ci-cd-app.git
+      path: k8s/controller
   target: {{ args.cluster_name }}
   args:
     # this passes the cluster_name initially passed via `kluctl deploy -a cluster_name=xxx.example.com` into the KluctlDeployment

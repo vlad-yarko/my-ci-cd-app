@@ -1,0 +1,36 @@
+version: "3"
+
+vars:
+  IMAGE_REPO: vladyslavyarko/ci-cd-backend-image
+  IMAGE_TAG: 1
+  SERVICE_RELEASE_TAG: services/backend
+
+includes:
+  utils:
+    taskfile: ../../utils/Taskfile.yaml
+    dir: ../../utils
+
+tasks:
+  install:
+    desc: "download dependencies"
+    cmds:
+      - pip install -r requirements.txt
+
+  install-ci:
+    desc: install/download package dependencies
+    cmds:
+      - pip install -r requirements.txt
+
+  run:
+    desc: "run app"
+    cmds:
+      - echo $PWD
+      - ls
+      - source .venv/bin/activate
+      - uvicorn main:app --host 0.0.0.0 --port 8000
+
+  test:
+    desc: run tests
+    cmds:
+      - source .venv/bin/activate
+      - pytest -v

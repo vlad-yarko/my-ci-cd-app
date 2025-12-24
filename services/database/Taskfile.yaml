@@ -1,0 +1,32 @@
+version: "3"
+
+vars:
+  IMAGE_REPO: vladyslavyarko/ci-cd-database-image
+  IMAGE_TAG: 1
+  SERVICE_RELEASE_TAG: services/database
+
+includes:
+  utils:
+    taskfile: ../../utils/Taskfile.yaml
+    dir: ../../utils
+
+tasks:
+  install:
+    desc: "download dependencies"
+    cmds:
+      - echo "No deps"
+
+  install-ci:
+    desc: install/download package dependencies
+    cmds:
+      - echo "No deps"
+
+  run:
+    desc: "run app"
+    cmds:
+      - echo "No run"
+
+  test:
+    desc: run tests
+    cmds:
+      - echo "No tests"
