@@ -86,7 +86,7 @@ jobs:
     needs: run-tests
     strategy:
       matrix:
-        service: ${{ fromJson(needs.filter.outputs.services) }}
+        service: ${{ github.ref_type == 'tag' ? ['tag-service'] : (needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '' ? fromJson(needs.filter.outputs.services) : []) }}
       fail-fast: false
     steps:
     - name: Trigger Build
