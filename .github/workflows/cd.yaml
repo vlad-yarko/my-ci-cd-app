@@ -8,7 +8,7 @@ on:
         required: true
         type: choice
         options:
-          - services/python
+          - services/backend
           - services/database
           - services/frontend
       version:
