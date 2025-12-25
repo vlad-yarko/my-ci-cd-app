@@ -1,4 +1,4 @@
-name: Update GitOps Manifests
+name: GitOps CD
 
 on:
   workflow_dispatch:
