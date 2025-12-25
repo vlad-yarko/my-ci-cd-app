@@ -44,7 +44,7 @@ jobs:
         id: set-output
         run: |
           if [[ "${{ inputs.event_name }}" == "workflow_dispatch" ]]; then
-            echo 'service="${{ inputs.service }}"' >> "$GITHUB_OUTPUT"
+            echo 'service=${{ inputs.service }}' >> "$GITHUB_OUTPUT"
             echo 'environment=development' >> "$GITHUB_OUTPUT"
 
           elif [[ "${{ inputs.ref_type }}" == "tag" ]]; then
@@ -54,7 +54,7 @@ jobs:
             echo 'environment=production' >> "$GITHUB_OUTPUT"
 
           else # push to main
-            echo 'service="${{ inputs.service }}"' >> "$GITHUB_OUTPUT"
+            echo 'service=${{ inputs.service }}' >> "$GITHUB_OUTPUT"
             echo 'environment=staging' >> "$GITHUB_OUTPUT"
           fi
 

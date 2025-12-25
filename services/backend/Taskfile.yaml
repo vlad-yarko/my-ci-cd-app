@@ -26,11 +26,11 @@ tasks:
     cmds:
       - echo $PWD
       - ls
-      - source .venv/bin/activate
+      # - source .venv/bin/activate
       - uvicorn main:app --host 0.0.0.0 --port 8000
 
   test:
     desc: run tests
     cmds:
-      - source .venv/bin/activate
+      # - source .venv/bin/activate
       - pytest -v
