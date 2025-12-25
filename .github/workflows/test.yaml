@@ -66,6 +66,7 @@ jobs:
         run: |
           task install-ci
       - name: run tests
+        continue-on-error: false
         working-directory: ${{ matrix.service }}
         run: |
           task test
