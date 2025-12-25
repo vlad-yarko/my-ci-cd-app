@@ -26,14 +26,14 @@ tasks:
     cmds:
       # - yarn build
       # - yarn start
-      - yarn dev
+      - yarn dev &
 
   test:
     desc: run tests
     cmds:
       # - yarn run build
       # - yarn run start
-      - yarn dev
+      - yarn dev &
       - yarn playwright install
       - yarn playwright test
 
