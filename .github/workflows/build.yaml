@@ -31,7 +31,7 @@ on:
 
 run-name: >
   Build & Push •
-  ${{ inputs.service || 'Services' }}
+  ${{ inputs.ref_type == 'tag' && inputs.ref_name || inputs.service || 'Services' }}
 
 permissions:
   actions: write # used to trigger deploy workflow
