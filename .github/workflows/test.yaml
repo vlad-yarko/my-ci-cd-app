@@ -21,6 +21,11 @@ on:
         required: false
         type: string
         default: ''
+      service:
+        description: "Service to use"
+        required: false
+        type: string
+        default: ''
 
 
 permissions:
@@ -71,7 +76,7 @@ jobs:
         run: |
           task test
       - name: Trigger Build
-        if: ${{ github.event_name != 'pull_request' && ((github.event_name == 'push' && github.ref_name == 'main') || github.ref_type == 'tag' || inputs.version != '') }}
+        if: ${{ github.event_name != 'pull_request' && ((github.event_name == 'push' && github.ref_name == 'main') || github.ref_type == 'tag' || (inputs.version != '' && inputs.service != '')) }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
