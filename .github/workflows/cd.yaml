@@ -39,7 +39,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0    a
         with:
           ref: main # Checking out the tip of main (vs the GITHUB_REF of the build workflow is more robust to merge conflicts since we merge back to main)
 
