@@ -43,9 +43,7 @@ jobs:
         with:
           ref: main # Checking out the tip of main (vs the GITHUB_REF of the build workflow is more robust to merge conflicts since we merge back to main)
 
-      - uses: ./.github/actions/setup-dependencies
-        with:
-          install_task: "true"
+      - uses: ./.github/actions/task-dep
       - name: Generate Commit Message
         id: generate-commit-message
         run: |
