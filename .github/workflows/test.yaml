@@ -86,7 +86,7 @@ jobs:
     needs: run-tests
     strategy:
       matrix:
-        service: ${{ github.ref_type == 'tag' && fromJson('["tag-service"]') || fromJson(needs.filter.outputs.services) }}
+        service: ${{ github.ref_type == 'tag' && fromJson('["services/database"]') || fromJson(needs.filter.outputs.services) }}
       fail-fast: false
     steps:
       - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
