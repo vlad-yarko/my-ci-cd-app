@@ -83,7 +83,7 @@ jobs:
   build-trigger:
     if: ${{ always() && (needs.run-tests.result == 'success' || needs.run-tests.result == 'skipped') && (github.ref_type == 'tag' || ((github.event_name != 'pull_request' && (github.event_name == 'push' && github.ref_name == 'main') || (inputs.version != '' && inputs.service != ''))) && (needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '')) }} # only runs if all tests succeed
     runs-on: ubuntu-24.04
-    needs: run-tests
+    needs: [run-tests, filter]
     strategy:
       matrix:
         service: ${{ github.ref_type == 'tag' && fromJson('["services/database"]') || fromJson(needs.filter.outputs.services) }}
