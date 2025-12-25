@@ -1,0 +1,120 @@
+name: Build & Push
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: "Service to build"
+        type: choice
+        required: true
+        options:
+          - services/python
+          - services/database
+          - services/frontend
+      version:
+        description: "Version/tag to use (optional; defaults generating with git describe)"
+        required: false
+        type: string
+      event_name:
+        description: "Event name"
+        type: string
+        required: true
+        default: ""
+      ref_type:
+        description: "Build trigger"
+        type: string
+        required: true
+      ref_name:
+        description: "Build trigger name"
+        type: string
+        required: true
+
+permissions:
+  actions: write # used to trigger deploy workflow
+  contents: read
+
+jobs:
+  filter:
+    runs-on: ubuntu-24.04
+    outputs:
+      service: ${{ steps.set-output.outputs.service }}
+      environment: ${{ steps.set-output.outputs.environment }}
+    steps:
+      - name: Set Output
+        id: set-output
+        run: |
+          if [[ "${{ inputs.event_name }}" == "workflow_dispatch" ]]; then
+            echo 'service="${{ inputs.service }}"' >> "$GITHUB_OUTPUT"
+            echo 'environment=development' >> "$GITHUB_OUTPUT"
+
+          elif [[ "${{ inputs.ref_type }}" == "tag" ]]; then
+            tag="${{ inputs.ref_name }}"        # e.g. service-a@1.2.3
+            svc="${tag%%@*}"
+            echo "service=$svc" >> "$GITHUB_OUTPUT"
+            echo 'environment=production' >> "$GITHUB_OUTPUT"
+
+          else # push to main
+            echo 'service="${{ inputs.service }}"' >> "$GITHUB_OUTPUT"
+            echo 'environment=staging' >> "$GITHUB_OUTPUT"
+          fi
+
+  build-push-container-images:
+    runs-on: ubuntu-24.04
+    if: ${{ needs.filter.outputs.service != '[]' && needs.filter.outputs.service != '' }}
+    needs: filter
+    steps:
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
+        with:
+          # Setting fetch-depth: 0 ensure tags are fetched (so git describe works properly)
+          fetch-depth: 0
+      - uses: ./.github/actions/task-dep
+      - name: Login to Docker Hub
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@05340d1c670183e7caabdb33ae9f1c80fae3b0c2 # v3.6.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@1583c0f09d26c58c59d25b0eef29792b7ce99d9a # v3.11.1
+      - name: Compute image tag
+        id: image-tag
+        working-directory: ${{ needs.filter.outputs.service }}
+        env:
+          ENVIRONMENT: ${{ needs.filter.outputs.environment }}
+          INPUT_VERSION: ${{ inputs.event_name == 'workflow_dispatch' && inputs.version || '' }}
+          SERVICE: ${{ needs.filter.outputs.service }}
+        shell: bash
+        run: |
+          if [[ -n "$INPUT_VERSION" ]]; then
+            version=$INPUT_VERSION
+            image_tag=$(task utils:manual-version-tag -- "$INPUT_VERSION")
+          elif [[ "$ENVIRONMENT" == "production" ]]; then
+            version=$(task utils:generate-version -- "$SERVICE")
+            image_tag=$(task utils:generate-version-tag -- "$SERVICE")
+          else
+            version=$(task utils:generate-extended-version -- "$SERVICE")
+            image_tag=$(task utils:generate-extended-version-tag -- "$SERVICE")
+          fi
+
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "image_tag=${image_tag}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@ccc2b40e9ea6518f9252a22a990f8e868370f62e # v6.18.0
+        with:
+          context: ${{ needs.filter.outputs.service }}
+          tags: ${{ steps.image-tag.outputs.image_tag }}
+          push: true
+          # platforms: linux/amd64 # TODO: add multi arch "linux/amd64,linux/arm64"
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Trigger Deploy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run cd.yaml \
+            -f service=${{ needs.filter.outputs.service }} \
+            -f version=${{ steps.image-tag.outputs.version }} \
+            -f environment=${{ needs.filter.outputs.environment }}

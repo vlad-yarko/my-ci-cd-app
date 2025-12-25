@@ -9,6 +9,8 @@ spec:
     git:
       url: https://github.com/vlad-yarko/my-ci-cd-app.git
       path: k8s/controller
+      ref:
+        branch: main  
   target: {{ args.cluster_name }}
   args:
     # this passes the cluster_name initially passed via `kluctl deploy -a cluster_name=xxx.example.com` into the KluctlDeployment

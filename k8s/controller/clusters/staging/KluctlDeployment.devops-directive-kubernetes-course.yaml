@@ -9,6 +9,8 @@ spec:
     git:
       url: https://github.com/vlad-yarko/my-ci-cd-app.git
       path: k8s/application
+      ref:
+        branch: main  
   target: staging
   context: default
   # let it automatically clean up orphan KluctlDeployment resources
