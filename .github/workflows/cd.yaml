@@ -63,6 +63,9 @@ jobs:
       # Alternatively, we could use peter-evans/create-pull-request to generate a PR instead
       - name: Commit & push (via Task)
         working-directory: ${{ inputs.service }}
+        env:
+          GIT_USER_NAME: vlad-yarko
+          GIT_USER_EMAIL: vladyarik88888@gmail.com
         run: |
           task utils:git:commit-push \
             COMMIT_MSG="${{ steps.generate-commit-message.outputs.commit_message }}" \
