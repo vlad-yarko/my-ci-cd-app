@@ -24,6 +24,10 @@ on:
           - staging
           - production
 
+run-name: >
+  GitOps CD •
+  ${{ inputs.service || 'Services' }}
+
 concurrency:
   group: ${{ github.workflow }}-gitops-${{ inputs.environment }}-${{ inputs.service }}
   cancel-in-progress: false

@@ -28,6 +28,11 @@ on:
         default: ''
 
 
+# run-name: >
+#   Tests •
+#   ${{ github.event_name }} •
+#   ${{ inputs.service || 'auto-services' }}
+
 permissions:
   actions: write # used to trigger build workflow
   contents: read
