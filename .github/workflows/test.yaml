@@ -75,11 +75,17 @@ jobs:
       #   working-directory: ${{ matrix.service }}
       #   run: |
       #     task install-ci
-      - name: run tests
+      # - name: run tests
+      #   continue-on-error: false
+      #   working-directory: ${{ matrix.service }}
+      #   run: |
+      #     task test
+      - uses: adambirds/docker-compose-action@v1.5.0
+        # working-directory: ${{ matrix.service }}
         continue-on-error: false
-        working-directory: ${{ matrix.service }}
-        run: |
-          task test
+        with:
+          compose-file: ${{ matrix.service }}/docker-compose.tests.yaml
+          up-flags: "--build"
   build-trigger:
     if: ${{ always() && (needs.run-tests.result == 'success' || needs.run-tests.result == 'skipped') && (github.ref_type == 'tag' || ((github.event_name != 'pull_request' && (github.event_name == 'push' && github.ref_name == 'main') || (inputs.version != '' && inputs.service != ''))) && (needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '')) }} # only runs if all tests succeed
     runs-on: ubuntu-24.04

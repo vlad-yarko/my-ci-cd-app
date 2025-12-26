@@ -8,6 +8,11 @@ services:
     #   - 5432:5432
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   backend:
     build:
       context: ../backend
@@ -55,6 +60,7 @@ services:
       - backend 
       - frontend
     working_dir: /app
+    container_name: playwright
     volumes:
       - ./:/app
     # command: >
