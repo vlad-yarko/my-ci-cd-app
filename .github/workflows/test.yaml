@@ -72,6 +72,7 @@ jobs:
           install_python: ${{ startsWith(matrix.service, 'services/backend/') }}
           service_path: ${{ matrix.service }}
       - name: Build and Run service
+        if: ${{ matrix.service == 'services/frontend' }}
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: ${{ matrix.service }}/docker-compose.tests.yaml # mention the path where your docker compose file is present
