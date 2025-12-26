@@ -1,0 +1,10 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Values.backend.middleware.name }}
+  namespace: {{ .Values.sharedNamespace }}
+spec:
+  stripPrefix:
+    forceSlash: false
+    prefixes:
+      - {{ .Values.backend.middleware.prefix }}

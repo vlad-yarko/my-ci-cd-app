@@ -1,0 +1,40 @@
+sharedNamespace: my-kubernetes-application
+# applicationHost: my-kubernetes.chickenkiller.com
+applicationHost: my-kubernetes.mooo.com
+
+
+frontend:
+  configmap:
+    name: frontend-configmap
+    REACT_APP_API_URL: "/api"
+
+  deployment:
+    name: frontend-deployment
+    replicas: 2
+    podName: frontend-pod
+    containerName: frontend-container
+    # image: ghcr.io/vlad-yarko/my-kubernetes-frontend:1.0.1
+    image: kubernetes-yep-registry.duckdns.org/my-kubernetes/frontend:prod
+    version: 1
+    containerPort: 8080
+
+  service:
+    name: frontend-service
+    port: 8080
+
+  ingressRoute:
+    name: frontend-ingressroute
+
+  hpa:
+    name: frontend-hpa
+
+  secret: staging
+
+secret_tls:
+  name: secret-tls
+
+middleware_tls:
+  name: middleware-tls
+
+harborSecret:
+  name: harbor-secret

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-postgres-exporter
+  labels:
+    app: prometheus-postgres-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-postgres-exporter-pod
+  template:
+    metadata:
+      labels:
+        app: prometheus-postgres-exporter-pod
+    spec:
+      containers:
+        - name: postgres-exporter
+          image: prometheuscommunity/postgres-exporter:latest
+          # env:
+          #   - name: DATA_SOURCE_NAME
+          #     value: "postgresql://postgres:password@postgres:5432/postgres?sslmode=disable"
+          ports:
+            - name: metrics
+              containerPort: 9187
+          envFrom:
+            - secretRef:
+                name: {{ .Values.database.secretName }}

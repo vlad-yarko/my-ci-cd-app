@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.database.migrationJobName }}
+  namespace: {{ .Values.sharedNamespace }}
+  # annotations:
+  #   "helm.sh/hook": pre-install
+spec:
+  backoffLimit: {{ .Values.database.migrationJobBackoffLimit }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.database.migrationJobPodName }}
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        - name: {{ .Values.database.migrationJobContainerName }}-init
+          image: postgres:15
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for PostgreSQL to be ready..."
+              until pg_isready -h "$HOST" -p "{{ include "postgres_port" . }}"; do
+                sleep 1;
+              done
+              echo "PostgreSQL is up!"
+          env:
+          - name: HOST
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.database.secretName }}
+                key: DB_HOST
+      containers:
+        - name: {{ .Values.database.migrationJobContainerName }}
+          image: {{ .Values.database.migrationJobImage }}:{{ .Values.database.version }}
+          args:
+            - -path=/app/migrations
+            - -database=$(DATABASE_URL)?sslmode=disable
+            - up
+          envFrom:
+            - secretRef:
+                name: {{ .Values.database.secretName }}
+      imagePullSecrets:
+        # - name: {{ .Values.harborSecret.name }}
+        - name: harbor-secret
