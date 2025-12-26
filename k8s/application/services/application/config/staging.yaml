@@ -10,4 +10,4 @@ database:
 frontend:
   deployment:
     image: vladyslavyarko/ci-cd-frontend-image
-    version: c5b6ec3-0000-gc5b6ec3 # staging_services/frontend
+    version: 9adae51-0000-g9adae51 # staging_services/frontend
