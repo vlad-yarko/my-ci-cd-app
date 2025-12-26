@@ -16,11 +16,6 @@ tasks:
   #   cmds:
   #     - pip install -r requirements.txt
 
-  # install-ci:
-  #   desc: install/download package dependencies
-  #   cmds:
-  #     - pip install -r requirements.txt
-
   # run:
   #   desc: "run app"
   #   cmds:
@@ -29,11 +24,16 @@ tasks:
   #     # - source .venv/bin/activate
   #     - uvicorn main:app --host 0.0.0.0 --port 8000
 
+  install-ci:
+    desc: install/download package dependencies
+    cmds:
+      - pip install -r requirements.txt
+
   test:
     desc: run tests
     cmds:
-      # - pytest -v
+      - pytest -v
     # - docker compose -f docker-compose.tests.yaml up --build --abort-on-container-exit --exit-code-from tests
-    - docker compose -f docker-compose.tests.yaml up --build -d
-    - docker compose -f docker-compose.tests.yaml logs -f
-    - docker compose -f docker-compose.tests.yaml down
+    # - docker compose -f docker-compose.tests.yaml up --build -d
+    # - docker compose -f docker-compose.tests.yaml logs -f
+    # - docker compose -f docker-compose.tests.yaml down

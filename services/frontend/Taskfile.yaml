@@ -16,11 +16,6 @@ tasks:
   #   cmds:
   #     - yarn install
 
-  # install-ci:
-  #   desc: install/download package dependencies
-  #   cmds:
-  #     - yarn install --immutable
-
   # run:
   #   desc: "run app"
   #   cmds:
@@ -38,11 +33,14 @@ tasks:
   #     - yarn playwright install-deps
   #     - yarn playwright test
 
+  install-ci:
+    desc: install/download package dependencies
+    cmds:
+      - yarn install
+
   test:
     desc: run tests
     cmds:
-      # - pytest -v
-    # - docker compose -f docker-compose.tests.yaml up --build --abort-on-container-exit --exit-code-from playwright
-    - docker compose -f docker-compose.tests.yaml up --build -d
-    - docker compose -f docker-compose.tests.yaml logs -f
-    - docker compose -f docker-compose.tests.yaml down
+      - yarn playwright install
+      - yarn playwright install-deps
+      - yarn playwright test

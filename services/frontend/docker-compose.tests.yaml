@@ -53,22 +53,22 @@ services:
   #       yarn playwright install-deps &&
   #       yarn playwright test
   #     "
-  playwright:
-    image: mcr.microsoft.com/playwright:v1.56.1-noble
-    depends_on:
-      - database
-      - backend 
-      - frontend
-    working_dir: /app
-    container_name: playwright
-    volumes:
-      - ./:/app
-    # command: >
-    #   sh -c "
-    #     apk add --no-cache python3 make g++ bash
-    #     yarn install --immutable &&
-    #     yarn playwright install &&
-    #     yarn playwright install-deps &&
-    #     yarn playwright test
-    #   "
-    command: sh -c "yarn install && yarn playwright install --with-deps && yarn playwright install chrome && yarn playwright test"
+  # playwright:
+  #   image: mcr.microsoft.com/playwright:v1.56.1-noble
+  #   depends_on:
+  #     - database
+  #     - backend 
+  #     - frontend
+  #   working_dir: /app
+  #   container_name: playwright
+  #   volumes:
+  #     - ./:/app
+  #   # command: >
+  #   #   sh -c "
+  #   #     apk add --no-cache python3 make g++ bash
+  #   #     yarn install --immutable &&
+  #   #     yarn playwright install &&
+  #   #     yarn playwright install-deps &&
+  #   #     yarn playwright test
+  #   #   "
+  #   command: sh -c "yarn install && yarn playwright install --with-deps && yarn playwright install chrome && yarn playwright test"

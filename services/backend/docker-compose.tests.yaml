@@ -2,13 +2,16 @@ version: "3.9"
 
 
 services:
+  # tests:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     args:
+  #       PYTHON_VERSION: "3.11"
+  #     target: prod
+  #   container_name: backend-app
+  #   entrypoint: ""
+  #   command: pytest -v
   tests:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        PYTHON_VERSION: "3.11"
-      target: prod
-    container_name: backend-app
-    entrypoint: ""
-    command: pytest -v
+    image: busybox   # lightweight image
+    command: echo "No tests"

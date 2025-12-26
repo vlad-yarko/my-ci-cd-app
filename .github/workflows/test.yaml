@@ -71,31 +71,20 @@ jobs:
           install_node: ${{ startsWith(matrix.service, 'services/frontend/') }}
           install_python: ${{ startsWith(matrix.service, 'services/backend/') }}
           service_path: ${{ matrix.service }}
-      # - name: Install / Build
-      #   working-directory: ${{ matrix.service }}
-      #   run: |
-      #     task install-ci
-      # - name: run tests
-      #   continue-on-error: false
-      #   working-directory: ${{ matrix.service }}
-      #   run: |
-      #     task test
-      - name: Run tests
+      - name: Build and Run service
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: ${{ matrix.service }}/docker-compose.tests.yaml # mention the path where your docker compose file is present
           up-flags: "--build"
-      # - uses: adambirds/docker-compose-action@v1.5.0
-      #   # working-directory: ${{ matrix.service }}
-      #   continue-on-error: false
-      #   with:
-      #     compose-file: ${{ matrix.service }}/docker-compose.tests.yaml
-      #     up-flags: "--build"
-      # - uses: adrielcodeco/docker-compose-run-action@v1
-      #   with:
-      #     compose-file: ${{ matrix.service }}/docker-compose.tests.yaml
-      #     run-flags: "--build"
-          # service: my-service
+      - name: Install / Build tests
+        working-directory: ${{ matrix.service }}
+        run: |
+          task install-ci
+      - name: run tests
+        continue-on-error: false
+        working-directory: ${{ matrix.service }}
+        run: |
+          task test
   build-trigger:
     if: ${{ always() && (needs.run-tests.result == 'success' || needs.run-tests.result == 'skipped') && (github.ref_type == 'tag' || ((github.event_name != 'pull_request' && (github.event_name == 'push' && github.ref_name == 'main') || (inputs.version != '' && inputs.service != ''))) && (needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '')) }} # only runs if all tests succeed
     runs-on: ubuntu-24.04
