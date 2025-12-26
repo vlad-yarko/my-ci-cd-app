@@ -31,7 +31,8 @@ export default defineConfig({
 		// baseURL: 'http://localhost:5173',
 		// baseURL: 'http://localhost:5173',
 		// baseURL: 'http://application:3000',
-		baseURL: 'http://frontend:8080',
+		// baseURL: 'http://frontend:8080',
+		baseURL: 'http://localhost:8080',
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: 'on-first-retry',
 	},
