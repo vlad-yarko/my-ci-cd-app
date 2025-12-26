@@ -71,10 +71,10 @@ jobs:
           install_node: ${{ startsWith(matrix.service, 'services/frontend/') }}
           install_python: ${{ startsWith(matrix.service, 'services/backend/') }}
           service_path: ${{ matrix.service }}
-      - name: Install / Build
-        working-directory: ${{ matrix.service }}
-        run: |
-          task install-ci
+      # - name: Install / Build
+      #   working-directory: ${{ matrix.service }}
+      #   run: |
+      #     task install-ci
       - name: run tests
         continue-on-error: false
         working-directory: ${{ matrix.service }}

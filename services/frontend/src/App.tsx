@@ -9,7 +9,8 @@ export default function App() {
 
     const fetchCount = async (): Promise<number> => {
         // let response = await api.get("/requests")
-        let response = await axios.get("/api/requests")
+        // let response = await axios.get("/api/requests")
+        let response = await axios.get('http://backend:8000/requests')
         // console.log("API", response.data)
         const data = response.data
         return data.count

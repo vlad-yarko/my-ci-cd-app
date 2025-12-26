@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  database: 
+    image: postgres:15.1-alpine
+    container_name: database
+    # ports:
+    #   - 5432:5432
+    env_file:
+      - .env
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+      target: prod
+    container_name: backend
+    # ports:
+    #   - "8000:8000"
+    depends_on:
+      - database
+    env_file:
+      - .env
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    container_name: frontend
+    ports:
+      - "8080:8080"
+      # - "443:443"
+    depends_on:
+      - database
+      - backend
+
+  # playwright:
+  #   image: node:20-alpine
+  #   depends_on:
+  #     - frontend
+  #   working_dir: /app
+  #   volumes:
+  #     - ./:/app
+  #   command: >
+  #     sh -c "
+  #       apk add --no-cache python3 make g++ bash
+  #       yarn install --immutable &&
+  #       yarn playwright install &&
+  #       yarn playwright install-deps &&
+  #       yarn playwright test
+  #     "
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.56.1-noble
+    depends_on:
+      - database
+      - backend 
+      - frontend
+    working_dir: /app
+    volumes:
+      - ./:/app
+    # command: >
+    #   sh -c "
+    #     apk add --no-cache python3 make g++ bash
+    #     yarn install --immutable &&
+    #     yarn playwright install &&
+    #     yarn playwright install-deps &&
+    #     yarn playwright test
+    #   "
+    command: sh -c "yarn install && yarn playwright install --with-deps && yarn playwright install chrome && yarn playwright test"

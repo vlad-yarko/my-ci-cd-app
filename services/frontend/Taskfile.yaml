@@ -11,30 +11,36 @@ includes:
     dir: ../utils
 
 tasks:
-  install:
-    desc: "download dependencies"
-    cmds:
-      - yarn install
+  # install:
+  #   desc: "download dependencies"
+  #   cmds:
+  #     - yarn install
 
-  install-ci:
-    desc: install/download package dependencies
-    cmds:
-      - yarn install --immutable
+  # install-ci:
+  #   desc: install/download package dependencies
+  #   cmds:
+  #     - yarn install --immutable
 
-  run:
-    desc: "run app"
-    cmds:
-      # - yarn build
-      # - yarn start
-      - yarn dev &
+  # run:
+  #   desc: "run app"
+  #   cmds:
+  #     # - yarn build
+  #     # - yarn start
+  #     - yarn dev &
+
+  # test:
+  #   desc: run tests
+  #   cmds:
+  #     # - yarn run build
+  #     # - yarn run start
+  #     - yarn dev &
+  #     - yarn playwright install
+  #     - yarn playwright install-deps
+  #     - yarn playwright test
 
   test:
     desc: run tests
     cmds:
-      # - yarn run build
-      # - yarn run start
-      - yarn dev &
-      - yarn playwright install
-      - yarn playwright install-deps
-      - yarn playwright test
-
+      # - pytest -v
+    - docker-compose -f docker-compose.tests.yaml up --build --abort-on-container-exit
+    - docker-compose -f docker-compose.tests.yaml down

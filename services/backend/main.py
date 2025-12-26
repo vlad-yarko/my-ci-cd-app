@@ -3,6 +3,7 @@ import logging
 import random
 import time
 
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, status, Request
 from starlette.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,8 +15,8 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST
 )
 
-from engine import get_session
-from models import Request as SQLRequest
+from engine import get_session, engine
+from models import Request as SQLRequest, Base
 from metrics import (
     REQUESTS,
     RESPONSES,
@@ -27,7 +28,8 @@ from metrics import (
 
 origins = [
     "http://localhost:5173",
-    "http://127.0.0.1:5173"
+    "http://127.0.0.1:5173",
+    "http://frontend"
 ]
 
 
@@ -41,7 +43,15 @@ logger = logging.getLogger(__name__)
 APP_NAME = "fastapi-backend"
 
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if os.getenv("TEST_ENV", "") == "true":
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -66,6 +76,15 @@ app.add_middleware(
 #     return {
 #         "count": requests_data.count
 #     }
+
+
+
+# @app.on_event("startup")
+# async def startup():
+#     if os.getenv("TEST_ENV", "") == "true":
+#         async with engine.begin() as conn:
+#             await conn.run_sync(Base.metadata.create_all)
+
 
 
 @app.get("/requests")
@@ -96,10 +115,10 @@ async def health_endpoint(session: AsyncSession = Depends(get_session)):
         return JSONResponse(content={"status": "error"}, status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
 
 
-@app.get("/react")
-async def react_endpoint():
-    data = os.getenv("REACT_PUBLIC_ANTON")
-    return data
+# @app.get("/react")
+# async def react_endpoint():
+#     data = os.getenv("REACT_PUBLIC_ANTON")
+#     return data
 
 
 @app.middleware("http")

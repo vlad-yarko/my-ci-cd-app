@@ -1,20 +1,22 @@
 ###
-FROM node:20.14-bullseye-slim AS build
+FROM node:20-bullseye-slim AS build
+# FROM node:20.14-bullseye-slim AS build
 
 LABEL maintainer="vlad-yarko"
 LABEL org.opencontainers.image.source="https://github.com/vlad-yarko/my-kubernetes"
 
 WORKDIR /app
 
-COPY package*.json ./
+RUN apt-get update && apt-get install -y python3 make g++
 
-RUN --mount=type=cache,target=/app/.npm \
-  npm set cache /app/.npm && \
-  npm install
+COPY package.json yarn.lock ./
+
+# RUN yarn install --immutable
+RUN yarn install
 
 COPY . .
 
-RUN npm run build
+RUN yarn build
 
 
 ###
