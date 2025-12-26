@@ -1,5 +1,5 @@
 {
 	"services/backend": "2.0.0",
-	"services/frontend": "2.0.0",
+	"services/frontend": "2.0.1",
 	"services/database": "2.1.1"
 }
