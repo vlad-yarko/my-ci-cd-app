@@ -18,3 +18,4 @@ jobs:
         uses: actions/stale@8f717f0dfca33b78d3c933452e42558e4456c8e7 # v9.1.0
         with:
           days-before-stale: 30
+          days-before-close: 7
