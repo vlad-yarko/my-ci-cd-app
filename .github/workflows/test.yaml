@@ -75,11 +75,16 @@ jobs:
       #   working-directory: ${{ matrix.service }}
       #   run: |
       #     task install-ci
-      - name: run tests
-        continue-on-error: false
-        working-directory: ${{ matrix.service }}
-        run: |
-          task test
+      # - name: run tests
+      #   continue-on-error: false
+      #   working-directory: ${{ matrix.service }}
+      #   run: |
+      #     task test
+      - name: Run tests
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: ${{ matrix.service }}/docker-compose.tests.yaml # mention the path where your docker compose file is present
+          up-flags: "--build"
       # - uses: adambirds/docker-compose-action@v1.5.0
       #   # working-directory: ${{ matrix.service }}
       #   continue-on-error: false
