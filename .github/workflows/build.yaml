@@ -144,8 +144,8 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Trigger Deploy
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
-          # GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh workflow run cd.yaml \
             -f service=${{ needs.filter.outputs.service }} \
