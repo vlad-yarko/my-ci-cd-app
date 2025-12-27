@@ -1,7 +1,29 @@
 name: GitOps CD
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
+  #   inputs:
+  #     service:
+  #       description: "Path to the service to deploy (frontend)"
+  #       required: true
+  #       type: choice
+  #       options:
+  #         - services/backend
+  #         - services/database
+  #         - services/frontend
+  #     version:
+  #       description: "Version to deploy"
+  #       required: true
+  #       type: string
+  #     environment:
+  #       description: "Target environment to deploy to"
+  #       required: true
+  #       type: choice
+  #       options:
+  #         - development
+  #         - staging
+  #         - production
+  workflow_call:
     inputs:
       service:
         description: "Path to the service to deploy (frontend)"

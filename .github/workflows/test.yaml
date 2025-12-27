@@ -111,15 +111,22 @@ jobs:
           # Setting fetch-depth: 0 ensure tags are fetched (so git describe works properly)
           fetch-depth: 0
       - name: Trigger Build
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh workflow run build.yaml \
-            -f service=${{ matrix.service }} \
-            -f version=${{ inputs.version }} \
-            -f event_name=${{ github.event_name }} \
-            -f ref_type=${{ github.ref_type }} \
-            -f ref_name=${{ github.ref_name }}
+        # env:
+        #   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ./.github/workflows/build.yaml
+        with:
+          service: ${{ matrix.service }}
+          version: ${{ inputs.version }}
+          event_name: ${{ github.event_name }}
+          ref_type: ${{ github.ref_type }}
+          ref_name: ${{ github.ref_name }}
+        # run: |
+        #   gh workflow run build.yaml \
+        #     -f service=${{ matrix.service }} \
+        #     -f version=${{ inputs.version }} \
+        #     -f event_name=${{ github.event_name }} \
+        #     -f ref_type=${{ github.ref_type }} \
+        #     -f ref_name=${{ github.ref_name }}
   # This job gets skipped if all upstream jobs succeeded, but it runs (and fails) if any upstream failed.
   # This is what we want since GitHub required actions do not block merging when skipped, but can block it when failed.
   # See: https://github.com/actions/runner/issues/2566#issuecomment-3053484216
