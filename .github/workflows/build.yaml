@@ -32,12 +32,8 @@ on:
     inputs:
       service:
         description: "Service to build"
-        type: choice
+        type: string
         required: true
-        options:
-          - services/backend
-          - services/database
-          - services/frontend
       version:
         description: "Version/tag to use (optional; defaults generating with git describe)"
         required: false
