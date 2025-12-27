@@ -150,7 +150,6 @@ jobs:
       #       -f version=${{ steps.image-tag.outputs.version }} \
       #       -f environment=${{ needs.filter.outputs.environment }}
   trigger-deploy:
-    runs-on: ubuntu-24.04
     needs: [filter, build-push-container-images]
     uses: ./.github/workflows/cd.yaml
     with:
