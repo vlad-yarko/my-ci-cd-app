@@ -1,39 +1,16 @@
 name: Build & Push
 
 on:
-  # workflow_dispatch:
-  #   inputs:
-  #     service:
-  #       description: "Service to build"
-  #       type: choice
-  #       required: true
-  #       options:
-  #         - services/backend
-  #         - services/database
-  #         - services/frontend
-  #     version:
-  #       description: "Version/tag to use (optional; defaults generating with git describe)"
-  #       required: false
-  #       type: string
-  #     event_name:
-  #       description: "Event name"
-  #       type: string
-  #       required: true
-  #       default: ""
-  #     ref_type:
-  #       description: "Build trigger"
-  #       type: string
-  #       required: true
-  #     ref_name:
-  #       description: "Build trigger name"
-  #       type: string
-  #       required: true
-  workflow_call:
+  workflow_dispatch:
     inputs:
       service:
         description: "Service to build"
-        type: string
+        type: choice
         required: true
+        options:
+          - services/backend
+          - services/database
+          - services/frontend
       version:
         description: "Version/tag to use (optional; defaults generating with git describe)"
         required: false
@@ -51,6 +28,29 @@ on:
         description: "Build trigger name"
         type: string
         required: true
+  # workflow_call:
+  #   inputs:
+  #     service:
+  #       description: "Service to build"
+  #       type: string
+  #       required: true
+  #     version:
+  #       description: "Version/tag to use (optional; defaults generating with git describe)"
+  #       required: false
+  #       type: string
+  #     event_name:
+  #       description: "Event name"
+  #       type: string
+  #       required: true
+  #       default: ""
+  #     ref_type:
+  #       description: "Build trigger"
+  #       type: string
+  #       required: true
+  #     ref_name:
+  #       description: "Build trigger name"
+  #       type: string
+  #       required: true
 
 
 run-name: >
