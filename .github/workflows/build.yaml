@@ -157,4 +157,5 @@ jobs:
       service: ${{ needs.build-push-container-images.outputs.service }}
       version: ${{ needs.build-push-container-images.outputs.version }}
       environment: ${{ needs.filter.outputs.environment }}
+    secrets: inherit
 
