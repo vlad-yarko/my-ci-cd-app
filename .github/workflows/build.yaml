@@ -90,6 +90,9 @@ jobs:
     runs-on: ubuntu-24.04
     if: ${{ needs.filter.outputs.service != '[]' && needs.filter.outputs.service != '' }}
     needs: filter
+    outputs:
+      version: ${{ steps.image-tag.outputs.version }}
+      service: ${{ needs.filter.outputs.service }}
     steps:
       - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
@@ -138,16 +141,20 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Trigger Deploy
-        # env:
-        #   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: ./.github/workflows/cd.yaml
-        with:
-          service: ${{ needs.build.outputs.service }}
-          version: ${{ needs.build.outputs.version }}
-          environment: ${{ needs.filter.outputs.environment }}
-        # run: |
-        #   gh workflow run cd.yaml \
-        #     -f service=${{ needs.filter.outputs.service }} \
-        #     -f version=${{ steps.image-tag.outputs.version }} \
-        #     -f environment=${{ needs.filter.outputs.environment }}
+      # - name: Trigger Deploy
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     gh workflow run cd.yaml \
+      #       -f service=${{ needs.filter.outputs.service }} \
+      #       -f version=${{ steps.image-tag.outputs.version }} \
+      #       -f environment=${{ needs.filter.outputs.environment }}
+  trigger-deploy:
+    runs-on: ubuntu-24.04
+    needs: [filter, build-push-container-images]
+    uses: ./.github/workflows/cd.yaml
+    with:
+      service: ${{ needs.build-push-container-images.outputs.service }}
+      version: ${{ needs.build-push-container-images.outputs.version }}
+      environment: ${{ needs.filter.outputs.environment }}
+
