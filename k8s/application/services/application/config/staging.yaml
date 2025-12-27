@@ -5,7 +5,7 @@ backend:
 
 database:
   migrationJobImage: vladyslavyarko/ci-cd-database-image 
-  version: 2.1.1-0030-g7df5478 # staging_services/database
+  version: 2.1.1-0032-g43b621c # staging_services/database
 
 frontend:
   deployment:
