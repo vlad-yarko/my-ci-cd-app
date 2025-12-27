@@ -35,8 +35,8 @@ on:
 
 permissions:
   actions: write # used to trigger build workflow
-  # contents: read
-  contents: write
+  contents: read
+  # contents: write
 
 
 jobs:
@@ -98,45 +98,45 @@ jobs:
         working-directory: ${{ matrix.service }}
         run: |
           task test
-  # build-trigger:
-  #   if: ${{ always() && (needs.run-tests.result == 'success' || needs.run-tests.result == 'skipped') && (github.ref_type == 'tag' || ((github.event_name != 'pull_request' && (github.event_name == 'push' && github.ref_name == 'main') || (inputs.version != '' && inputs.service != ''))) && (needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '')) }} # only runs if all tests succeed
-  #   runs-on: ubuntu-24.04
-  #   needs: [run-tests, filter]
-  #   strategy:
-  #     matrix:
-  #       service: ${{ github.ref_type == 'tag' && fromJson('["services/database"]') || fromJson(needs.filter.outputs.services) }}
-  #     fail-fast: false
-  #   steps:
-  #     - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
-  #       with:
-  #         # Setting fetch-depth: 0 ensure tags are fetched (so git describe works properly)
-  #         fetch-depth: 0
-  #     - name: Trigger Build
-  #       env:
-  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       run: |
-  #         gh workflow run build.yaml \
-  #           -f service=${{ matrix.service }} \
-  #           -f version=${{ inputs.version }} \
-  #           -f event_name=${{ github.event_name }} \
-  #           -f ref_type=${{ github.ref_type }} \
-  #           -f ref_name=${{ github.ref_name }}
   build-trigger:
     if: ${{ always() && (needs.run-tests.result == 'success' || needs.run-tests.result == 'skipped') && (github.ref_type == 'tag' || ((github.event_name != 'pull_request' && (github.event_name == 'push' && github.ref_name == 'main') || (inputs.version != '' && inputs.service != ''))) && (needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '')) }} # only runs if all tests succeed
-    # runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04
     needs: [run-tests, filter]
     strategy:
       matrix:
         service: ${{ github.ref_type == 'tag' && fromJson('["services/database"]') || fromJson(needs.filter.outputs.services) }}
       fail-fast: false
-    uses: ./.github/workflows/build.yaml
-    with:
-      service: ${{ matrix.service }}
-      version: ${{ inputs.version }}
-      event_name: ${{ github.event_name }}
-      ref_type: ${{ github.ref_type }}
-      ref_name: ${{ github.ref_name }}
-    secrets: inherit
+    steps:
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
+        with:
+          # Setting fetch-depth: 0 ensure tags are fetched (so git describe works properly)
+          fetch-depth: 0
+      - name: Trigger Build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run build.yaml \
+            -f service=${{ matrix.service }} \
+            -f version=${{ inputs.version }} \
+            -f event_name=${{ github.event_name }} \
+            -f ref_type=${{ github.ref_type }} \
+            -f ref_name=${{ github.ref_name }}
+  # build-trigger:
+  #   if: ${{ always() && (needs.run-tests.result == 'success' || needs.run-tests.result == 'skipped') && (github.ref_type == 'tag' || ((github.event_name != 'pull_request' && (github.event_name == 'push' && github.ref_name == 'main') || (inputs.version != '' && inputs.service != ''))) && (needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '')) }} # only runs if all tests succeed
+  #   # runs-on: ubuntu-24.04
+  #   needs: [run-tests, filter]
+  #   strategy:
+  #     matrix:
+  #       service: ${{ github.ref_type == 'tag' && fromJson('["services/database"]') || fromJson(needs.filter.outputs.services) }}
+  #     fail-fast: false
+  #   uses: ./.github/workflows/build.yaml
+  #   with:
+  #     service: ${{ matrix.service }}
+  #     version: ${{ inputs.version }}
+  #     event_name: ${{ github.event_name }}
+  #     ref_type: ${{ github.ref_type }}
+  #     ref_name: ${{ github.ref_name }}
+  #   secrets: inherit
   # This job gets skipped if all upstream jobs succeeded, but it runs (and fails) if any upstream failed.
   # This is what we want since GitHub required actions do not block merging when skipped, but can block it when failed.
   # See: https://github.com/actions/runner/issues/2566#issuecomment-3053484216

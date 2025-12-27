@@ -59,8 +59,8 @@ run-name: >
 
 permissions:
   actions: write # used to trigger deploy workflow
-  # contents: read
-  contents: write
+  contents: read
+  # contents: write
 
 jobs:
   filter:
@@ -142,20 +142,20 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      # - name: Trigger Deploy
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     gh workflow run cd.yaml \
-      #       -f service=${{ needs.filter.outputs.service }} \
-      #       -f version=${{ steps.image-tag.outputs.version }} \
-      #       -f environment=${{ needs.filter.outputs.environment }}
-  trigger-deploy:
-    needs: [filter, build-push-container-images]
-    uses: ./.github/workflows/cd.yaml
-    with:
-      service: ${{ needs.build-push-container-images.outputs.service }}
-      version: ${{ needs.build-push-container-images.outputs.version }}
-      environment: ${{ needs.filter.outputs.environment }}
-    secrets: inherit
+      - name: Trigger Deploy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run cd.yaml \
+            -f service=${{ needs.filter.outputs.service }} \
+            -f version=${{ steps.image-tag.outputs.version }} \
+            -f environment=${{ needs.filter.outputs.environment }}
+  # trigger-deploy:
+  #   needs: [filter, build-push-container-images]
+  #   uses: ./.github/workflows/cd.yaml
+  #   with:
+  #     service: ${{ needs.build-push-container-images.outputs.service }}
+  #     version: ${{ needs.build-push-container-images.outputs.version }}
+  #     environment: ${{ needs.filter.outputs.environment }}
+  #   secrets: inherit
 
