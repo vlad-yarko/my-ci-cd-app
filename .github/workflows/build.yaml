@@ -59,7 +59,8 @@ run-name: >
 
 permissions:
   actions: write # used to trigger deploy workflow
-  contents: read
+  # contents: read
+  contents: write
 
 jobs:
   filter:

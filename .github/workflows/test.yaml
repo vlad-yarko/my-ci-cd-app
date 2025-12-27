@@ -35,7 +35,8 @@ on:
 
 permissions:
   actions: write # used to trigger build workflow
-  contents: read
+  # contents: read
+  contents: write
 
 
 jobs:
