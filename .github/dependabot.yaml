@@ -1,10 +1,33 @@
+# version: 2
+# updates:
+#   - package-ecosystem: "npm" # Dependabot treats Yarn like npm for manifest/lock files
+#     directory: "/services/frontend"
+#     schedule:
+#       interval: "daily"
+#   - package-ecosystem: "pip"
+#     directory: "/services/backend"
+#     schedule:
+#       interval: "daily"
 version: 2
 updates:
   - package-ecosystem: "npm" # Dependabot treats Yarn like npm for manifest/lock files
     directory: "/services/frontend"
     schedule:
       interval: "daily"
+    commit-message:
+      prefix: "deps"
+    groups:
+      all-frontend-deps:
+        patterns:
+          - "*"  # Matches all dependencies, so updates are combined into one PR
+
   - package-ecosystem: "pip"
     directory: "/services/backend"
     schedule:
       interval: "daily"
+    commit-message:
+      prefix: "deps"
+    groups:
+      all-backend-deps:
+        patterns:
+          - "*"  # Matches all Python dependencies, combines into one PR
