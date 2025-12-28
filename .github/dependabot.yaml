@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "npm" # Dependabot treats Yarn like npm for manifest/lock files
+    directory: "/services/frontend"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/services/backend"
+    schedule:
+      interval: "daily"
