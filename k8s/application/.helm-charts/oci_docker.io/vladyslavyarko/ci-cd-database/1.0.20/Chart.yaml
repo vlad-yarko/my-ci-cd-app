@@ -3,13 +3,17 @@ annotations:
   org.opencontainers.image.source: https://github.com/vlad-yarko/my-kubernetes
 apiVersion: v2
 appVersion: 1.0.0
-description: Common chart of my-kubernetes
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 15.4.1
+description: Database chart of my-kubernetes
 home: https://github.com/vlad-yarko/my-kubernetes
 maintainers:
 - email: vladislavv44444@gmail.com
   name: vlad-yarko
-name: ci-cd-common
+name: ci-cd-database
 sources:
 - https://github.com/vlad-yarko/my-kubernetes
 type: application
-version: 1.0.0
+version: 1.0.20
