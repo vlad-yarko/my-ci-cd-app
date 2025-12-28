@@ -1,0 +1,45 @@
+- CI CD is terminology that is made for automation
+- It can require some time to set, but after it will be much better then all the time make all of this by yourself manually, then when it is all automated
+
+[]()
+
+- Here ci and cd are like seperate things
+- ci is used for making like: application ready to be deployed. It includes making tests, building application (for test only), linting and do some other steps, but this is not deployment yet. So it is about that your code always can be integrated
+- cd is meant for deploy (or delivery), they are a bit different things. But basically, this is automation for budling and pushing your application, and also depending of it is pull or pushed based, it can or just updated all tags etc for some images in manifests, or directly authorize to your cluster, vm etc and run commands there
+- Pipleline is basically a set of jobs, that include different steps, that need to be done all together. Also you can like different pipelines, and you will run them in chain calling each other, or also based on some conditions etc
+
+### delivery vs deployment
+
+- That is almost the same, the only difference is that deployment is fully automated, unlike in delivery you just will have an aproval button, where a reviwer (can be multiple of them) need to click button (after making desicion), and pipeline continues
+- But also there is thing like gitops, and with it you can have up to to approval buttons
+- To make this button differs in different ci cd tools. In github actions you need to make enviroment for github, and there for it set some rewievers, after you just set this environment for some job in one of your cd pipelines. After job will be stopped on that point and wait until reviewer will make desicion
+
+### Example
+
+- Or with gitops, on conroller level you can also make another level of delivery or deployment, and basically, if you have pull based deployment, you won’t make approval on cd level on ci cd tool, but approval on controller, for example argo cd. It means that there for deployment you just set auto syncing, and argo cd will apply everything by itself, but if you want to apply delivery, you won’t set autosyncing, and manuall just there will click button “sync” to pull all updates from git
+
+### pull based vs push based (cd)
+
+- cd can be of two types, push based or pull based
+- Does not matter what you have, delivery or deployment, like it is the same, no matter if aproval button there is or not. Like you can have 4 combinations, but push and pull have more differences then deployment or delivery
+- Push based cd is when you directly in your pipeline login (authorize) to your cluster, vm, some machine etc and run some commands to deploy your changes. This is not so cool
+- And pull based, when something pulls from somewhere updated. For example just pull based can be even if you somehow in your cluster pull from some storage like s3 new manifests. But this is boolshit, Almost always when we talk about pull based cd, we mean gitops
+
+### gitops & infrastacture (IaC)
+
+- GitOps is a practive for making pull based cd
+- Every GitOps is pull based, but not every pull based is GitOps
+- In GitOps, git is your source of truth
+- Like on your vm, cluster etc, you will run some controller like flux or argo cd, that will always sync the repo (or be ready to do that if just delivery, not deployment) from git, so it always udpates everything when it sees changes on git, almost always it is just main branch like main, that is why ci cd configured all around it with different releases etc. So when controller will see updates on repo, it will automatically sync it in your cluster to apply all changes
+- If you have deployment - it will just automatically sync everything, if delivery (sync disabled) - you will just click manually sync button when you need (when you made changes on main branch and all pipelines passed)
+- Also here can come concept like infrasracture - infrasracture is code
+- Infrastructure is all about how to run your code, cluster, vms, networks, volumes, databases, some cloud roles etc. That is all about that
+- And here is like egg and chicked, IaC and gitops controller. Argo cd etc can be ran only on already build thing, vm, cluster etc. And before running it must exist, and that is when come this concept. It is related to tools like terraform, they are also some kind of auromation etc to make infrastracture. Also can be cases when even terraform is ran on ci cd pipelines directly, but that is very rare case and almost only for push based
+- So you need to just understand, if you want to run your controller, before you need to have all your infrastracture setup, because controller is ran on infrastracture and it will apply updates and code on it. So gitops cares about code, but it is dependend also on infra, because it runs there
+
+### runners
+
+- Also there is thing when you think where to execute all your pipelines (linting, testing, deploy etc)
+- Like you need to know that all your pipelines (jobs) are executed somewhere, on some machines. And big companies even run their pipelines on their own servers etc, or even on the same server where is your application. Or they can just use some like clouds, or tools like namespace etc to run jobs. Or just built in, for example github actions has its ows servers to run pipelines (their jobs), for example you select os like ubuntu, and jobs will be executed on some github servers
+
+[]()
