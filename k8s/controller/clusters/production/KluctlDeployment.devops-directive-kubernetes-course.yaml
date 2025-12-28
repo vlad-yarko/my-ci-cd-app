@@ -1,7 +1,7 @@
 apiVersion: gitops.kluctl.io/v1beta1
 kind: KluctlDeployment
 metadata:
-  name: demo-app
+  name: super-app
   namespace: kluctl-gitops
 spec:
   interval: 5m
@@ -9,8 +9,8 @@ spec:
     git:
       url: https://github.com/vlad-yarko/my-ci-cd-app.git
       path: k8s/application
-      ref:
-        branch: main  
+      # ref:
+        # branch: main  
   target: production
   context: default
   # let it automatically clean up orphan KluctlDeployment resources

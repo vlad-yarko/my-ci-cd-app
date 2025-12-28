@@ -3,7 +3,7 @@ helmChart:
   # repo: oci://ghcr.io/vlad-yarko/my-kubernetes/backend-chart
   # repo: oci://kubernetes-yep-registry.duckdns.org/my-kubernetes/backend-chart-k
   repo: oci://docker.io/vladyslavyarko/ci-cd-backend
-  chartVersion: 1.0.0
+  chartVersion: 1.0.20
   releaseName: my-kubernetes-backend-{{ args.environment }}
   # namespace: {{ namespaces.application.name }}
   # namespace: default

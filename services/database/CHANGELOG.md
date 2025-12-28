@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/vlad-yarko/my-ci-cd-app/compare/services/database@2.1.0...services/database@2.1.1) (2025-12-26)
+
+
+### Bug Fixes
+
+* aaa ([da60034](https://github.com/vlad-yarko/my-ci-cd-app/commit/da600345a858c6060efa112082812d706543e902))
+
 ## [2.1.0](https://github.com/vlad-yarko/my-ci-cd-app/compare/services/database@2.0.0...services/database@2.1.0) (2025-12-26)
 
 

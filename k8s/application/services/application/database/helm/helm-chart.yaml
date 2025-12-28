@@ -2,7 +2,7 @@ helmChart:
   # path: ../chart
   repo: oci://docker.io/vladyslavyarko/ci-cd-database
   # repo: oci://ghcr.io/vlad-yarko/my-kubernetes/database-chart
-  chartVersion: 1.0.0
+  chartVersion: 1.0.20
   releaseName: my-kubernetes-database-{{ args.environment }}
   # namespace: {{ namespaces.application.name }}
   # namespace: default
