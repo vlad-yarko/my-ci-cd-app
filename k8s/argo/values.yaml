@@ -37,7 +37,8 @@ argo-cd:
   repoServer:
     extraContainers:
       - name: kluctl
-        image: lukasmrtvy/kluctl-argocd-plugin:v2.19.4
+        # image: lukasmrtvy/kluctl-argocd-plugin:v2.19.4
+        image: ghcr.io/kluctl/kluctl:v2.28.0-devel
         command: ["/var/run/argocd/argocd-cmp-server"]
         securityContext:
           runAsNonRoot: true
