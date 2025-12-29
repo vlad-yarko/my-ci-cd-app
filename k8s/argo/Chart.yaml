@@ -1,0 +1,37 @@
+apiVersion: v2
+# name: my-kubernetes-backend-chart
+name: argocd-my-ci-cd-app
+description: ArgoCD chart for my ci cd app
+type: application
+
+# Chart version — updates when chart templates/values change
+version: 1.0.0
+
+# App version — the app's actual version (image tag, etc)
+appVersion: "1.0.0"
+
+# This matches your Docker LABEL maintainer
+maintainers:
+  - name: vlad-yarko
+    email: vladislavv44444@gmail.com
+
+# These are your Docker labels but in Helm
+annotations:
+  org.opencontainers.image.source: "https://github.com/vlad-yarko/my-kubernetes"
+  org.opencontainers.image.maintainer: "vlad-yarko"
+
+# For documentation / searching
+home: "https://github.com/vlad-yarko/my-kubernetes"
+sources:
+  - "https://github.com/vlad-yarko/my-kubernetes"
+# keywords:
+#   - backend
+#   - kubernetes
+#   - helm
+#   - my-app
+
+dependencies:
+  - name: argo-cd
+    # version: "16.3.0"
+    version: "9.2.3"
+    repository: "https://argoproj.github.io/argo-helm"

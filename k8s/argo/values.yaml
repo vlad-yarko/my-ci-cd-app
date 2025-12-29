@@ -1,0 +1,66 @@
+# repoServer:
+#   extraContainers:
+#     - name: argocd-kluctl
+#       image: myregistry/kluctl:latest
+#       command: ["/bin/sh", "-c", "argocd-cmp-server --config /home/argocd/cmp-server/config/plugin.yaml"]
+#       volumeMounts:
+#         - name: cmp-plugin-config   # must match name below
+#           mountPath: /home/argocd/cmp-server/config/plugin.yaml
+#           subPath: plugin.yaml
+
+#   extraVolumes:
+#     - name: cmp-plugin-config      # must match volumeMounts name
+#       configMap:
+#         name: argocd-kluctl       # name of the ConfigMap you already created
+
+# argo-cd:
+#   repoServer:
+#     extraContainers:
+#       - name: argocd-kluctl
+#         image: myregistry/kluctl:latest
+#         command:
+#           - "/bin/sh"
+#           - "-c"
+#           - "argocd-cmp-server --config /home/argocd/cmp-server/config/plugin.yaml"
+#         volumeMounts:
+#           - name: cmp-plugin-config
+#             mountPath: /home/argocd/cmp-server/config/plugin.yaml
+#             subPath: plugin.yaml
+#           - name: argocd-home
+#             mountPath: /home/argocd
+#     extraVolumes:
+#       - name: cmp-plugin-config
+#         configMap:
+#           name: argocd-kluctl  # name of the ConfigMap you already created
+
+argo-cd:
+  repoServer:
+    extraContainers:
+      - name: kluctl
+        image: lukasmrtvy/kluctl-argocd-plugin:v2.19.4
+        command: ["/var/run/argocd/argocd-cmp-server"]
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+        volumeMounts:
+          # Must mount Argo CD’s runtime directory and plugin directory:
+          - name: var-files
+            mountPath: /var/run/argocd
+          - name: plugins
+            mountPath: /home/argocd/cmp-server/plugins
+          # Mount the plugin config (see below) at the expected path:
+          - name: kluctl-plugin-config
+            mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: plugin.yaml
+          # Use a dedicated /tmp volume for the plugin:
+          - name: cmp-tmp
+            mountPath: /tmp
+    # Define the volumes for the above mounts:
+    volumes:
+      # ConfigMap volume with our plugin.yaml (declared in section 3):
+      - name: kluctl-plugin-config
+        configMap:
+          name: argocd-cmp-kluctl
+      # A fresh emptyDir for /tmp (as recommended for sidecars):
+      - name: cmp-tmp
+        emptyDir: {}

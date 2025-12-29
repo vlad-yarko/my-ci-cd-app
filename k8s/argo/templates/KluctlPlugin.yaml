@@ -1,0 +1,76 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: ConfigManagementPlugin
+# metadata:
+#   name: argocd-kluctl-plugin
+#   namespace: argo
+# spec:
+#   version: v1.0
+#   generate:
+#     command: ["sh", "-c"]
+#     args: ["kluctl render -t $KLUCTL_TARGET --output-stdout"]
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: argocd-cm
+#   # name: argocd-kluctl-plugin
+#   namespace: argo
+# data:
+#   configManagementPlugins: |
+#     - name: argocd-kluctl-plugin
+#       generate:
+#         command: ["sh", "-c"]
+#         args: ["kluctl render -t $KLUCTL_TARGET --output-stdout"]
+
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: argocd-cm
+#   namespace: argoc
+# data:
+#   configManagementPlugins: |
+#     - name: my-plugin
+#       generate:
+#         command: ["my-plugin.sh"]
+#         args: ["generate"]
+
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: argocd-kluctl
+#   namespace: argo
+# data:
+#   plugin.yaml: |
+#     apiVersion: argoproj.io/v1alpha1
+#     kind: ConfigManagementPlugin
+#     metadata:
+#       name: argocd-kluctl              # plugin logical name
+#     spec:
+#       version: v1.0
+#       generate:
+#         command: ["/bin/sh", "-c"]
+#         args: ["kluctl render -t $KLUCTL_TARGET --output-stdout"]   # must print YAML/JSON to stdout
+# discover:
+#   fileName: "mytool.yaml"      # optional: discovery pattern
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cmp-kluctl
+  namespace: argo
+data:
+  plugin.yaml: |
+    apiVersion: argoproj.io/v1alpha1
+    kind: ConfigManagementPlugin
+    metadata:
+      name: kluctl
+    spec:
+      # Note: do not rely on the deprecated argocd-cm plugin CRD – use sidecar config instead:contentReference[oaicite:12]{index=12}.
+      # The 'generate' command should output Kubernetes YAML. Here we render the Kluctl project with --print-all to stdout:
+      generate:
+        command: ["kluctl render -t $KLUCTL_TARGET --print-all"]
+        # command: ["kluctl render -t $KLUCTL_TARGET --output-stdout"]
+        # command: ["/usr/local/bin/kluctl", "render", "--print-all"]
+        # You can add args or env variables if needed, e.g. --offline or specific tags.
+      # Optionally, add a 'discover' rule so Argo CD auto-detects Kluctl repos (or omit for manual plugin usage).
+      # discover:
+      #   fileName: "deployment.yaml"
