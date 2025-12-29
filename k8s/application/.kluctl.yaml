@@ -3,13 +3,13 @@ targets:
     args:
       environment: staging
       environmentType: non-prod
-    context: minikube
+    # context: minikube
 
   - name: production
     args:
       environment: production
       environmentType: prod
-    context: kind-kind
+    # context: kind-kind
 
 args:
   - name: environment
