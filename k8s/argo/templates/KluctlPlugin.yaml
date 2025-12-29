@@ -90,9 +90,10 @@ data:
       discover:
         fileName: ".kluctl.yaml"
       generate:
-        command:
-          - kluctl
-          - render
-          - "-t"
-          - "$KLUCTL_TARGET"
-          - "--print-all"
+        # command:
+        #   - kluctl
+        #   - render
+        #   - "-t"
+        #   - "$KLUCTL_TARGET"
+        #   - "--print-all"
+        command: ["/usr/local/bin/kluctl", "render", "-t", "$KLUCTL_TARGET", "--print-all"]
