@@ -64,7 +64,7 @@
 #     metadata:
 #       name: kluctl
 #     spec:
-#       #  Note: do not rely on the deprecated argocd-cm plugin CRD – use sidecar config instead:contentReference[oaicite:12]{index=12}.
+#       #   Note: do not rely on the deprecated argocd-cm plugin CRD – use sidecar config instead:contentReference[oaicite:12]{index=12}.
 #       # The 'generate' command should output Kubernetes YAML. Here we render the Kluctl project with --print-all to stdout:
 #       generate:
 #         command: ["kluctl render -t $KLUCTL_TA  RGET --print-all"]
