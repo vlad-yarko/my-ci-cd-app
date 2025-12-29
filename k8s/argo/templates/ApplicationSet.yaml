@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ci-cd-app-application-set
+  namespace: argo
+spec:
+  generators:
+    - list:
+        elements:
+          - name: ci-cd-app
+            target: staging
+          - name: ci-cd-app
+            target: production
+  template:
+    metadata:
+      name: "{{`{{name}}`}}-application-{{`{{target}}`}}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/vlad-yarko/my-ci-cd-app.git
+        targetRevision: main
+        # targetRevision: HEAD
+        path: k8s/application
+        plugin:
+          name: kluctl
+          # name: argocd-kluctl
+          env:
+            - name: KLUCTL_TARGET
+              value: "{{`{{target}}`}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: default # for manifests with not hard coded namespace
+      syncPolicy:
+        # syncOptions:
+        #   - CreateNamespace=true # For creating namespace for cluster (in destination) if does not exist
+        automated:
+          selfHeal: true
+          prune: true
+        # automated:
+        #     enabled: false # Explicitly set to false for manual operation
