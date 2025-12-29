@@ -52,6 +52,29 @@
 # discover:
 #   fileName: "mytool.yaml"      # optional: discovery pattern
 
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: argocd-cmp-kluctl
+#   namespace: argo
+# data:
+#   plugin.yaml: |
+#     apiVersion: argoproj.io/v1alpha1
+#     kind: ConfigManagementPlugin
+#     metadata:
+#       name: kluctl
+#     spec:
+#       # Note: do not rely on the deprecated argocd-cm plugin CRD – use sidecar config instead:contentReference[oaicite:12]{index=12}.
+#       # The 'generate' command should output Kubernetes YAML. Here we render the Kluctl project with --print-all to stdout:
+#       generate:
+#         command: ["kluctl render -t $KLUCTL_TARGET --print-all"]
+#         # command: ["kluctl render -t $KLUCTL_TARGET --output-stdout"]
+#         # command: ["/usr/local/bin/kluctl", "render", "--print-all"]
+#         # You can add args or env variables if needed, e.g. --offline or specific tags.
+#       # Optionally, add a 'discover' rule so Argo CD auto-detects Kluctl repos (or omit for manual plugin usage).
+#       # discover:
+#       #   fileName: "deployment.yaml"
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -64,13 +87,12 @@ data:
     metadata:
       name: kluctl
     spec:
-      # Note: do not rely on the deprecated argocd-cm plugin CRD – use sidecar config instead:contentReference[oaicite:12]{index=12}.
-      # The 'generate' command should output Kubernetes YAML. Here we render the Kluctl project with --print-all to stdout:
+      discover:
+        fileName: ".kluctl.yaml"
       generate:
-        command: ["kluctl render -t $KLUCTL_TARGET --print-all"]
-        # command: ["kluctl render -t $KLUCTL_TARGET --output-stdout"]
-        # command: ["/usr/local/bin/kluctl", "render", "--print-all"]
-        # You can add args or env variables if needed, e.g. --offline or specific tags.
-      # Optionally, add a 'discover' rule so Argo CD auto-detects Kluctl repos (or omit for manual plugin usage).
-      # discover:
-      #   fileName: "deployment.yaml"
+        command:
+          - kluctl
+          - render
+          - "-t"
+          - "$KLUCTL_TARGET"
+          - "--print-all"
