@@ -97,10 +97,16 @@ data:
         # #   - "$KLUCTL_TARGET"
         # #   - "--print-all"
         # command: ["/usr/local/bin/kluctl", "render", "-t", "$KLUCTL_TARGET", "--print-all"]
+        # command:
+        #   - kluctl
+        #   - render
+        #   - "-t"
+        #   # - "$KLUCTL_TARGET"
+        #   - production
+        #   - "--print-all"
         command:
-          - kluctl
-          - render
-          - "-t"
-          # - "$KLUCTL_TARGET"
-          - production
-          - "--print-all"
+          - /bin/sh
+          - -c
+          - |
+            kluctl helm-pull
+            kluctl render -t production --print-all
