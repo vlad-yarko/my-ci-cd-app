@@ -22,11 +22,11 @@ spec:
         # targetRevision: HEAD
         path: k8s/application
         plugin:
-          name: kluctl
+          name: kluctl-{{`{{target}}`}}
           # name: argocd-kluctl
-          env:
-            - name: KLUCTL_TARGET
-              value: "{{`{{target}}`}}"
+          # env:
+          #   - name: KLUCTL_TARGET
+          #     value: "{{`{{target}}`}}"
       destination:
         server: https://kubernetes.default.svc
         namespace: default # for manifests with not hard coded namespace

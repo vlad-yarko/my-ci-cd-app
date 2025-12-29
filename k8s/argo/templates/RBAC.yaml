@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argo-repo-server-secret-reader
+  namespace: my-kubernetes-application
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argo-repo-server-secret-reader-binding
+  namespace: my-kubernetes-application
+subjects:
+  - kind: ServiceAccount
+    name: argo-argocd-repo-server
+    namespace: argo
+roleRef:
+  kind: Role
+  name: argo-repo-server-secret-reader
+  apiGroup: rbac.authorization.k8s.io
