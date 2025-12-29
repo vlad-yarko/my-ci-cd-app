@@ -101,5 +101,6 @@ data:
           - kluctl
           - render
           - "-t"
-          - "$KLUCTL_TARGET"
+          # - "$KLUCTL_TARGET"
+          - production
           - "--print-all"
