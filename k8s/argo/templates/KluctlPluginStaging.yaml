@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cmp-kluctl-staging
+  namespace: argo
+data:
+  plugin.yaml: |
+    apiVersion: argoproj.io/v1alpha1
+    kind: ConfigManagementPlugin
+    metadata:
+      name: kluctl-staging
+    spec:
+      discover:
+        fileName: ".kluctl.yaml"
+      generate:
+        command:
+          - /bin/sh
+          - -c
+          - |
+            kluctl helm-pull
+            kluctl render -t staging --print-all
