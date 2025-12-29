@@ -53,34 +53,34 @@ argo-cd:
           # Use a dedicated /tmp volume for the plugin:
           - name: cmp-tmp
             mountPath: /tmp
-      - name: kluctl-staging
-        image: ghcr.io/kluctl/kluctl:v2.28.0-devel
-        command: ["/var/run/argocd/argocd-cmp-server"]
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 999
-        volumeMounts:
-          # Must mount Argo CD’s runtime directory and plugin directory:
-          - name: var-files
-            mountPath: /var/run/argocd
-          - name: plugins
-            mountPath: /home/argocd/cmp-server/plugins
-          # Mount the plugin config (see below) at the expected path:
-          - name: kluctl-plugin-config-staging
-            mountPath: /home/argocd/cmp-server/config/plugin.yaml
-            subPath: plugin.yaml
-          # Use a dedicated /tmp volume for the plugin:
-          - name: cmp-tmp
-            mountPath: /tmp
+      # - name: kluctl-staging
+      #   image: ghcr.io/kluctl/kluctl:v2.28.0-devel
+      #   command: ["/var/run/argocd/argocd-cmp-server"]
+      #   securityContext:
+      #     runAsNonRoot: true
+      #     runAsUser: 999
+      #   volumeMounts:
+      #     # Must mount Argo CD’s runtime directory and plugin directory:
+      #     - name: var-files
+      #       mountPath: /var/run/argocd
+      #     - name: plugins
+      #       mountPath: /home/argocd/cmp-server/plugins
+      #     # Mount the plugin config (see below) at the expected path:
+      #     - name: kluctl-plugin-config-staging
+      #       mountPath: /home/argocd/cmp-server/config/plugin.yaml
+      #       subPath: plugin.yaml
+      #     # Use a dedicated /tmp volume for the plugin:
+      #     - name: cmp-tmp
+      #       mountPath: /tmp
     # Define the volumes for the above mounts:
     volumes:
       # ConfigMap volume with our plugin.yaml (declared in section 3):
       - name: kluctl-plugin-config-production
         configMap:
           name: argocd-cmp-kluctl-production
-      - name: kluctl-plugin-config-staging
-        configMap:
-          name: argocd-cmp-kluctl-staging
+      # - name: kluctl-plugin-config-staging
+      #   configMap:
+      #     name: argocd-cmp-kluctl-staging
       # A fresh emptyDir for /tmp (as recommended for sidecars):
       - name: cmp-tmp
         emptyDir: {}
