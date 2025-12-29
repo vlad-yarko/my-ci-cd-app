@@ -7,10 +7,12 @@ spec:
   generators:
     - list:
         elements:
-          - name: ci-cd-app
-            target: staging
+          # - name: ci-cd-app
+          #   target: staging
+          #   server: a
           - name: ci-cd-app
             target: production
+            # server: a
   template:
     metadata:
       name: "{{`{{name}}`}}-application-{{`{{target}}`}}"
