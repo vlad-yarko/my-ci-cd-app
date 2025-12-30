@@ -5,7 +5,7 @@ backend:
 
 database:
   migrationJobImage: vladyslavyarko/ci-cd-database-image 
-  version: 1.0.54 # production_services/database
+  version: 1.0.60 # production_services/database
 
 frontend:
   deployment:
