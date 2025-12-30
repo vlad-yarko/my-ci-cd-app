@@ -5,6 +5,10 @@ metadata:
   namespace: {{ .Values.sharedNamespace }}
   # annotations:
   #   "helm.sh/hook": pre-install
+  annotations:
+    # argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded,HookFailed
+    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   backoffLimit: {{ .Values.database.migrationJobBackoffLimit }}
   template:
