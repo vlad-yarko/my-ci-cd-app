@@ -151,3 +151,15 @@ jobs:
         run: |
           echo "::error Some required job has failed!"
           exit 1
+  run-tests-result:
+    name: Tests / run-tests-result       # This is the stable name your branch rule will see
+    needs: run-tests                     # Wait for all run-tests matrix jobs to finish
+    if: always()                         # Always run, even if matrix jobs were skipped or failed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any matrix job failed
+        run: |
+          if [[ "${{ needs.run-tests.result }}" == "failure" ]]; then
+            echo "::error Some tests failed"
+            exit 1
+          fi
