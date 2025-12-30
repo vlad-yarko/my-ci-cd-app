@@ -1,0 +1,11 @@
+version: "3"
+
+tasks:
+  render-kluctl:
+      desc: "Commit & push changes to a branch with exponential backoff retries"
+      vars:
+        ENVIRONMENT: '{{.ENVIRONMENT | default "staging"}}'
+      cmds:
+        - |
+          kluctl helm-pull
+          kluctl render -t {{.ENVIRONMENT}} --print-all >| a.yaml
