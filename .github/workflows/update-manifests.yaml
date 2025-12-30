@@ -72,13 +72,12 @@ jobs:
             ENVIRONMENT=${{ inputs.environment }}
       - name: Setup helm
         uses: azure/setup-helm@v4.3.0
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.12"
       - name: Install kluctl
-        run: |
-          pip install kluctl
+        uses: supplypike/setup-bin@1fafb085795af4a3f183502f3a9dffa8f7b83217
+        with:
+          uri: "https://github.com/kluctl/kluctl/releases/download/v2.27.0/kluctl_v2.27.0_linux_amd64.tar.gz"
+          name: kluctl
+          version: "2.27.0"
       - name: Render kluctl stage
         working-directory: k8s/application
         run: | 
