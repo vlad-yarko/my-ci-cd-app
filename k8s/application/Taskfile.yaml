@@ -8,5 +8,5 @@ tasks:
       cmds:
         - |
           kluctl helm-pull
-          rm -f {{.ENVIRONMENT}}.yaml
-          kluctl render -t {{.ENVIRONMENT}} --print-all > {{.ENVIRONMENT}}.yaml
+          rm -f gitops/{{.ENVIRONMENT}}/manifest.yaml
+          kluctl render -t {{.ENVIRONMENT}} --print-all > gitops/{{.ENVIRONMENT}}/manifest.yaml

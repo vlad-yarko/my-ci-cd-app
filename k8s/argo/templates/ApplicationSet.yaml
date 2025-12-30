@@ -67,7 +67,7 @@ spec:
         repoURL: https://github.com/vlad-yarko/my-ci-cd-app.git
         targetRevision: main
         # targetRevision: HEAD
-        path: k8s/application/{{`{{target}}`}}.yaml
+        path: k8s/application/gitops/{{`{{target}}`}}/manifest.yaml
       destination:
         server: "{{`{{server}}`}}"
         namespace: default # for manifests with not hard coded namespace
