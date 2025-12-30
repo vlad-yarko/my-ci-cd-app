@@ -79,6 +79,7 @@ jobs:
           name: kluctl
           version: "2.27.0"
       - name: Render kluctl stage
+        # working-directory: ${{ inputs.service }}
         working-directory: k8s/application
         run: | 
           task utils:render-kluctl \
