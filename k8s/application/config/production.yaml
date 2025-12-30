@@ -9,3 +9,4 @@ namespaces:
     name: my-kubernetes-ingress
   monitoring:
     name: my-kubernetes-monitoring
+

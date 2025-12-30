@@ -14,7 +14,8 @@ backend:
     replicas: {{ replica }}
     containerName: backend-container
     # image: ghcr.io/vlad-yarko/my-kubernetes-backend:1.0.0
-    image: kubernetes-yep-registry.duckdns.org/my-kubernetes/backend:prod
+    image: {{ backend.deployment.image }}
+    version: {{ backend.deployment.version }}
     containerPort: 8000
 
   service:
