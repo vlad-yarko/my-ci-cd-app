@@ -149,7 +149,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_PAT }}
           # GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh workflow run cd.yaml \
+          gh workflow run update-manifests.yaml \
             -f service=${{ needs.filter.outputs.service }} \
             -f version=${{ steps.image-tag.outputs.version }} \
             -f environment=${{ needs.filter.outputs.environment }}
