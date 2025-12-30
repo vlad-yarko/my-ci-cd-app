@@ -82,7 +82,7 @@ jobs:
         # working-directory: ${{ inputs.service }}
         working-directory: k8s/application
         run: | 
-          task utils:render-kluctl \
+          task render-kluctl \
             ENVIRONMENT=${{ inputs.environment }}
     # THIS IS ONLY FOR LOGGING
       - run: |
