@@ -82,18 +82,18 @@ jobs:
         working-directory: ${{ matrix.service }}
         run: |
           task install-ci
-      - name: Run pytest
-        if: ${{ matrix.service == 'services/backend' }}
-        uses: pavelzw/pytest-action@v2
-        with:
-          verbose: true
-          emoji: true
-          job-summary: true
-          custom-arguments: '-q'
-          click-to-expand: true
-          report-title: 'Test Report'
+      # - name: Run pytest
+      #   if: ${{ matrix.service == 'services/backend' }}
+      #   uses: pavelzw/pytest-action@v2
+      #   with:
+      #     verbose: true
+      #     emoji: true
+      #     job-summary: true
+      #     custom-arguments: '-q'
+      #     click-to-expand: true
+      #     report-title: 'Test Report'
       - name: run tests
-        if: ${{ matrix.service != 'services/backend' }}
+        # if: ${{ matrix.service != 'services/backend' }}
         continue-on-error: false
         working-directory: ${{ matrix.service }}
         run: |
