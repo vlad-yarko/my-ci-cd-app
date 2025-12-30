@@ -59,8 +59,8 @@ database:
   secretName: database-secret
   # migrationJobImage: ghcr.io/vlad-yarko/my-kubernetes-database:1.0.0
   # migrationJobImage: kubernetes-yep-registry.duckdns.org/my-kubernetes/database:prod
-  migrationJobImage: {{ database.deployment.image }}
-  version: {{ database.deployment.version }}
+  migrationJobImage: {{ database.migrationJobImage }}
+  version: {{ database.version }}
   migrationJobName: database-job-migration
   migrationJobPodName: database-job-migration-pod
   migrationJobContainerName: database-job-migration-container
