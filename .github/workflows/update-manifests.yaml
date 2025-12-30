@@ -70,6 +70,20 @@ jobs:
           task utils:update-image-tags-service \
             NEW_TAG=${{ inputs.version }} \
             ENVIRONMENT=${{ inputs.environment }}
+      - name: Setup helm
+        uses: azure/setup-helm@v4.3.0
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Install kluctl
+        run: |
+          pip install kluctl
+      - name: Render kluctl stage
+        working-directory: k8s/application
+        run: | 
+          task utils:render-kluctl \
+            ENVIRONMENT=${{ inputs.environment }}
     # THIS IS ONLY FOR LOGGING
       - run: |
           git --no-pager diff

@@ -151,3 +151,12 @@ tasks:
 
         echo "Push failed after {{.MAX_RETRIES}} attempts" >&2
         exit 1
+
+  render-kluctl:
+    desc: "Commit & push changes to a branch with exponential backoff retries"
+    vars:
+      ENVIRONMENT: '{{.ENVIRONMENT | default "staging"}}'
+    cmds:
+      - |
+        kluctl helm-pull
+        kluctl render -t {{.ENVIRONMENT}} --print-all >| a.yaml
