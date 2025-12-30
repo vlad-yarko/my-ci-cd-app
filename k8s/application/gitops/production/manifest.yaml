@@ -575,7 +575,7 @@ spec:
             name: database-secret
         - secretRef:
             name: secret-production
-        image: vladyslavyarko/ci-cd-backend-image:1.0.10
+        image: vladyslavyarko/ci-cd-backend-image:1.0.51
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 2
