@@ -8,4 +8,5 @@ tasks:
       cmds:
         - |
           kluctl helm-pull
-          kluctl render -t {{.ENVIRONMENT}} --print-all >| a.yaml
+          rm -f {{.ENVIRONMENT}}.yaml
+          kluctl render -t {{.ENVIRONMENT}} --print-all > {{.ENVIRONMENT}}.yaml
