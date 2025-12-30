@@ -14,7 +14,9 @@ frontend:
     podName: frontend-pod
     containerName: frontend-container
     # image: ghcr.io/vlad-yarko/my-kubernetes-frontend:1.0.1
-    image: kubernetes-yep-registry.duckdns.org/my-kubernetes/frontend:prod
+    # image: kubernetes-yep-registry.duckdns.org/my-kubernetes/frontend:prod
+    image: {{ frontend.deployment.image }}
+    version: {{ frontend.deployment.version }}
     containerPort: 8080
 
   service:
