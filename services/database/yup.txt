@@ -25,9 +25,7 @@ sdfsdf
 asdfdf  
 asdff
 sfafdfs
-<<<<<<< HEAD
 sdf
-=======
 adsfff
 afds
 dsffds
