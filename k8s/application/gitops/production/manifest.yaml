@@ -494,7 +494,7 @@ spec:
         envFrom:
         - secretRef:
             name: database-secret
-        image: kubernetes-yep-registry.duckdns.org/my-kubernetes/database:prod:1
+        image: vladyslavyarko/ci-cd-database-image:1.0.60
         name: database-job-migration-container
       imagePullSecrets:
       - name: harbor-secret
@@ -575,7 +575,7 @@ spec:
             name: database-secret
         - secretRef:
             name: secret-production
-        image: kubernetes-yep-registry.duckdns.org/my-kubernetes/backend:prod:1
+        image: vladyslavyarko/ci-cd-backend-image:1.0.10
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 2
@@ -721,7 +721,7 @@ spec:
             name: frontend-configmap
         - secretRef:
             name: secret-production
-        image: kubernetes-yep-registry.duckdns.org/my-kubernetes/frontend:prod:1
+        image: vladyslavyarko/ci-cd-frontend-image:2.0.1
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 2
