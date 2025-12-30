@@ -1,0 +1,796 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/manifests
+  labels:
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: manifests
+    myKubernetes: myKubernetes
+  name: my-kubernetes-application
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/common/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: common
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: harbor-secret
+  namespace: my-kubernetes-application
+stringData:
+  .dockerconfigjson: |
+    {
+      "auths": {
+        "kubernetes-yep-registry.duckdns.org": {
+          "username": "admin",
+          "password": "business",
+          "auth": "YWRtaW46YnVzaW5lc3M="
+        }
+      }
+    }
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/common/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: common
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: secret-tls
+  namespace: my-kubernetes-application
+stringData:
+  tls.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIDoTCCAyegAwIBAgISBryCNdyWbehyT5exD9gEjyGxMAoGCCqGSM49BAMDMDIx
+    CzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQDEwJF
+    ODAeFw0yNTEyMDcyMDE3MTdaFw0yNjAzMDcyMDE3MTZaMCUxIzAhBgNVBAMTGmt1
+    YmVybmV0ZXMteWVwLmR1Y2tkbnMub3JnMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcD
+    QgAEybOzVoFhtasqWF/n6l0UXZ+Odx6a2u9DcjM/bSsdjczq3+FTUe4YceHg8YvE
+    eq0GBROnCQtEgwlrJ5p8uF/97KOCAigwggIkMA4GA1UdDwEB/wQEAwIHgDAdBgNV
+    HSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDAYDVR0TAQH/BAIwADAdBgNVHQ4E
+    FgQUVBLkGbqGwFAb60qEWvNCvKzZGOcwHwYDVR0jBBgwFoAUjw0TovYuftFQbDMY
+    OF1ZjiNykcowMgYIKwYBBQUHAQEEJjAkMCIGCCsGAQUFBzAChhZodHRwOi8vZTgu
+    aS5sZW5jci5vcmcvMCUGA1UdEQQeMByCGmt1YmVybmV0ZXMteWVwLmR1Y2tkbnMu
+    b3JnMBMGA1UdIAQMMAowCAYGZ4EMAQIBMC0GA1UdHwQmMCQwIqAgoB6GHGh0dHA6
+    Ly9lOC5jLmxlbmNyLm9yZy81MC5jcmwwggEEBgorBgEEAdZ5AgQCBIH1BIHyAPAA
+    dQBJnJtp3h187Pw23s2HZKa4W68Kh4AZ0VVS++nrKd34wwAAAZr6q7TTAAAEAwBG
+    MEQCIBAfrwdEhGPAMIeLW5RMkrWp+6hnFmrYnGbJu2/kD6mCAiAOIg44j82ROTB2
+    ezV6eAm85F9y2y6pPoFFpiCjuhgVDQB3AA5XlLzzrqk+MxssmQez95Dfm8I9cTIl
+    3SGpJaxhxU4hAAABmvqrtMYAAAQDAEgwRgIhAOmJobLXn2LoGNMFB0d8K+LZ7eT4
+    OHWPaZ29dRxDP/YbAiEA659D1SNRsyRixJCCyLJVBm4oWU3Nh8c91sQOr2pHCIkw
+    CgYIKoZIzj0EAwMDaAAwZQIxAMLxXtNMDXdmeiv5jjHhXJzY+/T08ePjnlgJwVM4
+    kJsF70vJUya5lGIvJJtJL1nKxwIwbRhPHzci45FhCfmpKs/LZownMOZny1wX3Wmv
+    noRo5vlk5Yr2ThE2QGE2tr5ynDKJ
+    -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    MIIEVjCCAj6gAwIBAgIQY5WTY8JOcIJxWRi/w9ftVjANBgkqhkiG9w0BAQsFADBP
+    MQswCQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJuZXQgU2VjdXJpdHkgUmVzZWFy
+    Y2ggR3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBYMTAeFw0yNDAzMTMwMDAwMDBa
+    Fw0yNzAzMTIyMzU5NTlaMDIxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBF
+    bmNyeXB0MQswCQYDVQQDEwJFODB2MBAGByqGSM49AgEGBSuBBAAiA2IABNFl8l7c
+    S7QMApzSsvru6WyrOq44ofTUOTIzxULUzDMMNMchIJBwXOhiLxxxs0LXeb5GDcHb
+    R6EToMffgSZjO9SNHfY9gjMy9vQr5/WWOrQTZxh7az6NSNnq3u2ubT6HTKOB+DCB
+    9TAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMB
+    MBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFI8NE6L2Ln7RUGwzGDhdWY4j
+    cpHKMB8GA1UdIwQYMBaAFHm0WeZ7tuXkAXOACIjIGlj26ZtuMDIGCCsGAQUFBwEB
+    BCYwJDAiBggrBgEFBQcwAoYWaHR0cDovL3gxLmkubGVuY3Iub3JnLzATBgNVHSAE
+    DDAKMAgGBmeBDAECATAnBgNVHR8EIDAeMBygGqAYhhZodHRwOi8veDEuYy5sZW5j
+    ci5vcmcvMA0GCSqGSIb3DQEBCwUAA4ICAQBnE0hGINKsCYWi0Xx1ygxD5qihEjZ0
+    RI3tTZz1wuATH3ZwYPIp97kWEayanD1j0cDhIYzy4CkDo2jB8D5t0a6zZWzlr98d
+    AQFNh8uKJkIHdLShy+nUyeZxc5bNeMp1Lu0gSzE4McqfmNMvIpeiwWSYO9w82Ob8
+    otvXcO2JUYi3svHIWRm3+707DUbL51XMcY2iZdlCq4Wa9nbuk3WTU4gr6LY8MzVA
+    aDQG2+4U3eJ6qUF10bBnR1uuVyDYs9RhrwucRVnfuDj29CMLTsplM5f5wSV5hUpm
+    Uwp/vV7M4w4aGunt74koX71n4EdagCsL/Yk5+mAQU0+tue0JOfAV/R6t1k+Xk9s2
+    HMQFeoxppfzAVC04FdG9M+AC2JWxmFSt6BCuh3CEey3fE52Qrj9YM75rtvIjsm/1
+    Hl+u//Wqxnu1ZQ4jpa+VpuZiGOlWrqSP9eogdOhCGisnyewWJwRQOqK16wiGyZeR
+    xs/Bekw65vwSIaVkBruPiTfMOo0Zh4gVa8/qJgMbJbyrwwG97z/PRgmLKCDl8z3d
+    tA0Z7qq7fta0Gl24uyuB05dqI5J1LvAzKuWdIjT1tP8qCoxSE/xpix8hX2dt3h+/
+    jujUgFPFZ0EVZ0xSyBNRF3MboGZnYXFUxpNjTWPKpagDHJQmqrAcDmWJnMsFY3jS
+    u1igv3OefnWjSQ==
+    -----END CERTIFICATE-----
+  tls.key: |
+    -----BEGIN PRIVATE KEY-----
+    MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgJo0baCpGx+kqnNcW
+    n8VuxAtjuzDMw3G+yFcd3WQlnw6hRANCAATJs7NWgWG1qypYX+fqXRRdn453Hpra
+    70NyMz9tKx2NzOrf4VNR7hhx4eDxi8R6rQYFE6cJC0SDCWsnmny4X/3s
+    -----END PRIVATE KEY-----
+type: kubernetes.io/tls
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/database/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: my-kubernetes-database-production
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.1
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: database
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: database-postgresql
+  namespace: my-kubernetes-application
+spec:
+  egress:
+  - {}
+  ingress:
+  - ports:
+    - port: 5432
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: my-kubernetes-database-production
+      app.kubernetes.io/name: postgresql
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: v1
+automountServiceAccountToken: false
+kind: ServiceAccount
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/database/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    app.kubernetes.io/instance: my-kubernetes-database-production
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.1
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: database
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: database-postgresql
+  namespace: my-kubernetes-application
+---
+apiVersion: v1
+data:
+  postgres-password: MTIzNA==
+kind: Secret
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/database/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    app.kubernetes.io/instance: my-kubernetes-database-production
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.1
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: database
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: database-postgresql
+  namespace: my-kubernetes-application
+type: Opaque
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/database/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: database
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: database-secret
+  namespace: my-kubernetes-application
+stringData:
+  BACKEND_DATABASE_URL: postgresql+asyncpg://postgres:1234@database-postgresql.my-kubernetes-application.svc.cluster.local:5432/postgres
+  DATA_SOURCE_NAME: postgres://postgres:1234@database-postgresql.my-kubernetes-application.svc.cluster.local:5432/postgres?sslmode=disable
+  DATABASE_URL: postgres://postgres:1234@database-postgresql.my-kubernetes-application.svc.cluster.local:5432/postgres
+  DB_HOST: database-postgresql.my-kubernetes-application.svc.cluster.local
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/database/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: my-kubernetes-database-production
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.1
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: database
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: database-postgresql-hl
+  namespace: my-kubernetes-application
+spec:
+  clusterIP: None
+  ports:
+  - name: tcp-postgresql
+    port: 5432
+    targetPort: tcp-postgresql
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: my-kubernetes-database-production
+    app.kubernetes.io/name: postgresql
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/database/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: my-kubernetes-database-production
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.1
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: database
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: database-postgresql
+  namespace: my-kubernetes-application
+spec:
+  ports:
+  - name: tcp-postgresql
+    nodePort: null
+    port: 5432
+    targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: my-kubernetes-database-production
+    app.kubernetes.io/name: postgresql
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/database/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: my-kubernetes-database-production
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.1
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: database
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: database-postgresql
+  namespace: my-kubernetes-application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: my-kubernetes-database-production
+      app.kubernetes.io/name: postgresql
+  serviceName: database-postgresql-hl
+  template:
+    metadata:
+      labels:
+        app: database
+        app.kubernetes.io/component: primary
+        app.kubernetes.io/instance: my-kubernetes-database-production
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: postgresql
+        app.kubernetes.io/version: 16.3.0
+        helm.sh/chart: postgresql-15.4.1
+      name: database-postgresql
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: primary
+                  app.kubernetes.io/instance: my-kubernetes-database-production
+                  app.kubernetes.io/name: postgresql
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: BITNAMI_DEBUG
+          value: "false"
+        - name: POSTGRESQL_PORT_NUMBER
+          value: "5432"
+        - name: POSTGRESQL_VOLUME_DIR
+          value: /bitnami/postgresql
+        - name: PGDATA
+          value: /bitnami/postgresql/data
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: postgres-password
+              name: database-postgresql
+        - name: POSTGRESQL_ENABLE_LDAP
+          value: "no"
+        - name: POSTGRESQL_ENABLE_TLS
+          value: "no"
+        - name: POSTGRESQL_LOG_HOSTNAME
+          value: "false"
+        - name: POSTGRESQL_LOG_CONNECTIONS
+          value: "false"
+        - name: POSTGRESQL_LOG_DISCONNECTIONS
+          value: "false"
+        - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+          value: "off"
+        - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+          value: error
+        - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+          value: pgaudit
+        image: docker.io/bitnamilegacy/postgresql:16.3.0-debian-12-r9
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+          failureThreshold: 6
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: postgresql
+        ports:
+        - containerPort: 5432
+          name: tcp-postgresql
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - -e
+            - |
+              exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+          failureThreshold: 6
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: tmp-dir
+        - mountPath: /opt/bitnami/postgresql/conf
+          name: empty-dir
+          subPath: app-conf-dir
+        - mountPath: /opt/bitnami/postgresql/tmp
+          name: empty-dir
+          subPath: app-tmp-dir
+        - mountPath: /dev/shm
+          name: dshm
+        - mountPath: /bitnami/postgresql
+          name: data
+      hostIPC: false
+      hostNetwork: false
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      serviceAccountName: database-postgresql
+      volumes:
+      - emptyDir: {}
+        name: empty-dir
+      - emptyDir:
+          medium: Memory
+        name: dshm
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 8Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/database/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: database
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: database-job-migration
+  namespace: my-kubernetes-application
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app: database-job-migration-pod
+    spec:
+      containers:
+      - args:
+        - -path=/app/migrations
+        - -database=$(DATABASE_URL)?sslmode=disable
+        - up
+        envFrom:
+        - secretRef:
+            name: database-secret
+        image: kubernetes-yep-registry.duckdns.org/my-kubernetes/database:prod:1
+        name: database-job-migration-container
+      imagePullSecrets:
+      - name: harbor-secret
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - |
+          echo "Waiting for PostgreSQL to be ready..."
+          until pg_isready -h "$HOST" -p "5432"; do
+            sleep 1;
+          done
+          echo "PostgreSQL is up!"
+        env:
+        - name: HOST
+          valueFrom:
+            secretKeyRef:
+              key: DB_HOST
+              name: database-secret
+        image: postgres:15
+        name: database-job-migration-container-init
+      restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/backend/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    app: backend-service
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: backend
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: backend-service
+  namespace: my-kubernetes-application
+spec:
+  ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: backend-pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/backend/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    app: backend-deployment
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: backend
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: backend-deployment
+  namespace: my-kubernetes-application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-pod
+  template:
+    metadata:
+      labels:
+        app: backend-pod
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: database-secret
+        - secretRef:
+            name: secret-production
+        image: kubernetes-yep-registry.duckdns.org/my-kubernetes/backend:prod:1
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 35
+          periodSeconds: 15
+          timeoutSeconds: 15
+        name: backend-container
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 35
+          periodSeconds: 15
+          timeoutSeconds: 15
+        resources:
+          limits:
+            cpu: 100m
+            memory: 200Mi
+          requests:
+            cpu: 50m
+            memory: 120Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+      imagePullSecrets:
+      - name: harbor-secret
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/backend/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: backend
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: backend-hpa
+  namespace: my-kubernetes-application
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
+  - resource:
+      name: memory
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend-deployment
+---
+apiVersion: v1
+data:
+  REACT_APP_API_URL: /api
+kind: ConfigMap
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/frontend/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: frontend
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: frontend-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/frontend/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: frontend
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: frontend-service
+  namespace: my-kubernetes-application
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: frontend-pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/frontend/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    app: frontend-deployment
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: frontend
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: frontend-deployment
+  namespace: my-kubernetes-application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-pod
+  template:
+    metadata:
+      labels:
+        app: frontend-pod
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: frontend-configmap
+        - secretRef:
+            name: secret-production
+        image: kubernetes-yep-registry.duckdns.org/my-kubernetes/frontend:prod:1
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /ping
+            port: 8080
+          initialDelaySeconds: 35
+          periodSeconds: 15
+          timeoutSeconds: 15
+        name: frontend-container
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /ping
+            port: 8080
+          initialDelaySeconds: 35
+          periodSeconds: 15
+          timeoutSeconds: 15
+        resources:
+          limits:
+            cpu: 150m
+            memory: 80Mi
+          requests:
+            cpu: 50m
+            memory: 30Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+      imagePullSecrets:
+      - name: harbor-secret
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    kluctl.io/deployment-item-dir: k8s/application/services/application/frontend/helm
+    kluctl.io/helm-install-namespace: my-kubernetes-application
+  labels:
+    kluctl.io/discriminator: ci-cd-app-production
+    kluctl.io/tag-0: frontend
+    kluctl.io/tag-1: application
+    kluctl.io/tag-2: services
+    kluctl.io/tag-3: helm
+    myKubernetes: myKubernetes
+  name: frontend-hpa
+  namespace: my-kubernetes-application
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
+  - resource:
+      name: memory
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend-deployment
