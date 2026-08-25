@@ -12,10 +12,9 @@ def get_user():
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
-    # 2. VULNERABILITY: String formatting directly inserts user input into the query.
-    # CodeQL tracks this untrusted data from the source (request.args) to the sink (execute).
-    query = f"SELECT * FROM users WHERE id = '{user_id}'"
-    cursor.execute(query)
+    # 2. FIX: Use a parameterized query so user input is bound safely.
+    query = "SELECT * FROM users WHERE id = ?"
+    cursor.execute(query, (user_id,))
 
     return str(cursor.fetchall())
 
